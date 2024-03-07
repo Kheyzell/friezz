@@ -1,0 +1,20 @@
+{
+  "name": "friezz",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "start": "turbo run dev",
+    "build": "turbo run build",
+    "start:prod": "node apps/server/dist/main",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "husky": "^8.0.3",
+    "ts-node": "^10.9.2",
+    "turbo": "^1.11.2",
+    "typescript": "^5.3.3"
+  }
+}

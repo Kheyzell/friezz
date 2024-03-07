@@ -1,0 +1,16 @@
+{
+  "name": "@friezz/common",
+  "version": "1.0.0",
+  "private": true,
+  "description": "common files",
+  "main": "./dist/src/index.js",
+  "devDependencies": {},
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "keywords": [
+    "common"
+  ],
+  "author": "",
+  "license": "ISC"
+}
