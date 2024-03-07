@@ -1,0 +1,2 @@
+# friezz
+Quizz for friends
