@@ -1,9 +1,11 @@
-import { Question, Questionnaire } from '@friezz/common';
+import { DEFAULT_QUESTIONS } from '@freizz/client/constants/questions.const';
 import { FormInput } from '@freizz/client/shared/components/FormInput';
 import { Title } from '@freizz/client/shared/components/Title';
 import { PrimaryButton } from '@freizz/client/shared/components/buttons/PrimaryButton';
 import { useUserStore } from '@freizz/client/store/user.store';
+import { Question, Questionnaire } from '@friezz/common';
 import React, { useState } from 'react';
+import { getElementsAtRandomFromArray } from '../../../shared/array.utils';
 import { DEFAULT_QUESTIONNAIRE } from '../questions.const';
 import { ParticipantNamesForm } from './ParticipantNamesForm';
 import { QuestionsForm } from './QuestionsForm';
@@ -21,6 +23,11 @@ export const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({
     const [questionnaire, setQuestionnaire] = useState<Questionnaire>(
         initialQuestionnaire ?? {
             ...DEFAULT_QUESTIONNAIRE,
+            questions: getElementsAtRandomFromArray(DEFAULT_QUESTIONS, 5).map(value => ({
+                value,
+                creatorName: '',
+                answers: [],
+            })),
             creatorName: username,
             participantNames: [username],
         },
