@@ -12,5 +12,6 @@ export const ParticipantNamesForm: React.FC<ParticipantsFormProps> = ({
         title="Participants:"
         initialTexts={initialParticipantNames}
         onTextsChange={onParticipantsChange}
+        isFirstInputDisabled={true}
     />
 );
