@@ -3,7 +3,7 @@ import { Loader } from '@freizz/client/shared/components/Loader';
 import { Title } from '@freizz/client/shared/components/Title';
 import { useUserStore } from '@freizz/client/store/user.store';
 import { Question } from '@friezz/common';
-import React from 'react';
+import React, { useState } from 'react';
 import { useAnswerForm } from './useAnswerForm.hook';
 
 type AnswerFormProps = {
@@ -19,14 +19,17 @@ export const AnswerForm: React.FC<AnswerFormProps> = ({ participantName, questio
         questions,
     );
 
+    const [isSaved, setIsSaved] = useState<boolean>(answers.length > 0);
+
     const handleAnswerChange = (questionIndex: number, answerValue: string) => {
         const newAnswers = [...answers];
         newAnswers[questionIndex].value = answerValue;
         setAnswers(newAnswers);
+        setIsSaved(false);
     };
 
     const handleSave = () => {
-        saveAnswers(answers);
+        saveAnswers(answers).then(() => setIsSaved(true));
     };
 
     return (
@@ -49,9 +52,15 @@ export const AnswerForm: React.FC<AnswerFormProps> = ({ participantName, questio
                     </div>
                 );
             })}
-            <button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded">
-                {isSaveLoading ? <Loader /> : 'Save'}
-            </button>
+
+            <div className='flex justify-center'>
+                {isSaved
+                    ? <></> // <div className='bg-green-500 text-white rounded-full border-2 border-green-500'> <FiCheckCircle /> </div>
+                    : (<button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded">
+                        {isSaveLoading ? <Loader /> : 'Save'}
+                    </button>)
+                }
+            </div>
         </div>
     );
 };

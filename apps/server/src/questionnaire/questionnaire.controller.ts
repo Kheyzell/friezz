@@ -32,7 +32,7 @@ export class QuestionsSetController {
   }
 
   @Post('/answers')
-  async saveAnswers(@Body() saveAnswersDto: SaveAnswersDto): Promise<AnswerEntity[]> {
+  async saveAnswers(@Body() saveAnswersDto: SaveAnswersDto): Promise<void> {
     return this.questionnaireService.saveAnswers(saveAnswersDto.answers);
   }
 }

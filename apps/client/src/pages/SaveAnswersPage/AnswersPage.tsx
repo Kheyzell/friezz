@@ -39,8 +39,8 @@ export const AnswersPage: FC = () => {
 
     return (
         <>
+            <Title> {questionnaire?.name} </Title>
             <div className="flex gap-2 items-center justify-center">
-                <Title> {questionnaire?.name} </Title>
                 <SecondaryButton onClick={onEditClick}>
                     <FiEdit />
                 </SecondaryButton>

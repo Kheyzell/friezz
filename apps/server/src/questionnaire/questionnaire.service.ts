@@ -45,7 +45,7 @@ export class QuestionnaireService {
         question.questionnaireId = questionnaireEntity.id;
         return question;
       });
-    await this.questionRepository.save(questionEntities);
+    await this.questionRepository.create(questionEntities);
     return questionnaireEntity.toQuestionnaire();
   }
 
@@ -60,9 +60,8 @@ export class QuestionnaireService {
     return this.questionnaireRepository.save(updatedQuestionnaireInstance);
   }
 
-
-  async saveAnswers(answers: Answer[]): Promise<AnswerEntity[]> {
+  async saveAnswers(answers: Answer[]): Promise<void> {
     const answerEntities = answers.map(answer => AnswerEntity.createFromDto(answer));
-    return this.answerRepository.save(answerEntities);
+    await this.answerRepository.save(answerEntities);
   }
 }

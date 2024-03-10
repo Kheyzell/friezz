@@ -11,23 +11,20 @@ export const ParticipantQuestionList: FC<ParticipantQuestionListProps> = ({ ques
 
     const { participantNames, questions } = questionnaire;
 
-    const orderUserFirst = (p1: string, p2: string) => {
-        if (p1 === username) return -1;
-        if (p2 === username) return 1;
-        return 0;
-    };
+    const otherParticipants = participantNames.filter(participantName => participantName != username);
 
     return (
         <>
-            {participantNames.sort(orderUserFirst).map((participantName, index) => {
-                const isUser = username === participantName;
+            <div className='text-xl'> Answer the questions </div>
+
+            <div key={`${username}_`} className={`rounded-2xl border-2 border-cyan-300`}>
+                <AnswerForm participantName={username} questions={questions} />
+            </div>
+
+            <div className='mt-8 text-xl'> Now, guess what the others have replied </div>
+            {otherParticipants.map((participantName, index) => {
                 return (
-                    <div
-                        key={`${participantName}_${index}`}
-                        className={`border rounded-2xl border-cyan-800 ${
-                            isUser ? 'border-2 border-cyan-300' : ''
-                        }`}
-                    >
+                    <div key={`${participantName}_${index}`} className={`border rounded-2xl border-cyan-800`}>
                         <AnswerForm participantName={participantName} questions={questions} />
                     </div>
                 );
