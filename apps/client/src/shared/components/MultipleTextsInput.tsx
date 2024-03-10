@@ -7,12 +7,14 @@ type MultipleTextsInputProps = {
     title: string;
     initialTexts?: string[];
     onTextsChange: (texts: string[]) => void;
+    isFirstInputDisabled?: boolean; // @Todo: handle this outside of the component
 };
 
 export const MultipleTextsInput: React.FC<MultipleTextsInputProps> = ({
     title,
     initialTexts = [],
     onTextsChange,
+    isFirstInputDisabled,
 }) => {
     const [texts, setTexts] = useState<string[]>([...initialTexts, '']);
 
@@ -45,11 +47,12 @@ export const MultipleTextsInput: React.FC<MultipleTextsInputProps> = ({
             {texts.map((text, index) => {
                 const isNotFirstOrLast = index > 0 && index < texts.length - 1;
                 return (
-                    <div key={index} className="flex items-center mb-2">
+                    <div key={index} className="flex items-center mb-2" >
                         <FormInput
                             value={text}
                             onChange={(text) => handleTextChange(index, text)}
                             placeholder={`${title} ${index + 1}`}
+                            disabled={isFirstInputDisabled && index === 0}
                         />
 
                         {isNotFirstOrLast && (
