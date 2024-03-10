@@ -6,12 +6,7 @@ export class HttpService {
     async get<T>(resource: string): Promise<HttpResponse<T>> {
         try {
             const { data } = await axios.get<T>(`${BASE_API_URL}/${resource}`);
-
-            if (data) {
-                return { data };
-            } else {
-                return { error: 'An error occured' };
-            }
+            return { data };
         } catch (error) {
             return { error: `Error fetching data` };
         }
@@ -20,12 +15,7 @@ export class HttpService {
     async post<T>(resource: string, body: unknown): Promise<HttpResponse<T>> {
         try {
             const { data } = await axios.post<T>(`${BASE_API_URL}/${resource}`, body);
-
-            if (data) {
-                return { data };
-            } else {
-                return { error: 'An error occured' };
-            }
+            return { data };
         } catch (error) {
             return { error: `Error updating data` };
         }
@@ -34,12 +24,7 @@ export class HttpService {
     async put<T>(resource: string, body: unknown): Promise<HttpResponse<T>> {
         try {
             const { data } = await axios.put<T>(`${BASE_API_URL}/${resource}`, body);
-
-            if (data) {
-                return { data };
-            } else {
-                return { error: 'An error occured' };
-            }
+            return { data };
         } catch (error) {
             return { error: `Error updating data` };
         }
