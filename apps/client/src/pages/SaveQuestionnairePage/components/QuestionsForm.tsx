@@ -10,7 +10,7 @@ export const QuestionsForm: React.FC<QuestionsFormProps> = ({ questions, onQuest
 
     const onTextChange = (questionValues: string[]) => {
         onQuestionsChange(
-            questions.map((question, index) => ({ ...question, value: questionValues[index] })),
+            questionValues.map((value, index) => ({ ...questions[index], value })),
         );
     };
 
