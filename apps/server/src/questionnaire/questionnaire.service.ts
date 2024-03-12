@@ -39,13 +39,15 @@ export class QuestionnaireService {
 
   async create(saveQuestionnaireDto: SaveQuestionnaireDto): Promise<Questionnaire> {
     const questionnaireEntity = await this.questionnaireRepository.save(QuestionnaireEntity.createFromDto(saveQuestionnaireDto));
+
     const questionEntities = saveQuestionnaireDto.questions
       .map(saveQuestionnaireDto => QuestionEntity.createFromDto(saveQuestionnaireDto))
       .map(question => {
         question.questionnaireId = questionnaireEntity.id;
         return question;
       });
-    await this.questionRepository.create(questionEntities);
+    this.questionRepository.save(questionEntities);
+
     return questionnaireEntity.toQuestionnaire();
   }
 

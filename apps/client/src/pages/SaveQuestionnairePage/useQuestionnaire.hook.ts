@@ -26,9 +26,7 @@ export const useQuestionnaire = (questionnaireName?: string) => {
         getQuestionSet();
     }, [questionnaireName]);
 
-    const saveQuestionnaire = async (
-        newQuestionSet: Questionnaire,
-    ): Promise<HttpResponse<void>> => {
+    const saveQuestionnaire = async (newQuestionSet: Questionnaire): Promise<HttpResponse<void>> => {
         const { error } = await questionnaireService.save(newQuestionSet);
         setError(error);
         return { error };
