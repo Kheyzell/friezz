@@ -6,11 +6,15 @@ const QUESTIONNAIRES_API = 'questionnaires';
 const ANSWERS_API = 'answers';
 
 class QuestionnaireService {
-    async getByName(questionnaire: string): Promise<HttpResponse<Questionnaire>> {
-        return httpService.get<Questionnaire>(`${QUESTIONNAIRES_API}/${questionnaire}`);
+    async getById(questionnaireId: number): Promise<HttpResponse<Questionnaire>> {
+        return httpService.get<Questionnaire>(`${QUESTIONNAIRES_API}/${questionnaireId}`);
     }
 
-    async save(questionnaire: Questionnaire): Promise<HttpResponse<void>> {
+    async getByName(questionnaireName: string): Promise<HttpResponse<Questionnaire>> {
+        return httpService.get<Questionnaire>(`${QUESTIONNAIRES_API}/${questionnaireName}`);
+    }
+
+    async save(questionnaire: Questionnaire): Promise<HttpResponse<Questionnaire>> {
         const saveQuestionnaireDto = this.createDtoFromQuestionnaire(questionnaire);
         return questionnaire.id
             ? this.update(saveQuestionnaireDto)
@@ -22,11 +26,11 @@ class QuestionnaireService {
         return httpService.post(`${QUESTIONNAIRES_API}/${ANSWERS_API}`, saveAnswerDto);
     }
 
-    private async create(questionnaire: SaveQuestionnaireDto): Promise<HttpResponse<void>> {
+    private async create(questionnaire: SaveQuestionnaireDto): Promise<HttpResponse<Questionnaire>> {
         return httpService.post(`${QUESTIONNAIRES_API}/create`, questionnaire);
     }
 
-    private async update(questionnaire: SaveQuestionnaireDto): Promise<HttpResponse<void>> {
+    private async update(questionnaire: SaveQuestionnaireDto): Promise<HttpResponse<Questionnaire>> {
         return httpService.post(`${QUESTIONNAIRES_API}/update`, questionnaire);
     }
 

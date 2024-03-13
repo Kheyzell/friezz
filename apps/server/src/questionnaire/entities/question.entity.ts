@@ -28,10 +28,11 @@ export class QuestionEntity {
         }
     }
 
-    static createFromDto({ id, value }: SaveQuestionDto): QuestionEntity {
+    static createFromDto({ id, value }: SaveQuestionDto, questionnaireId?: number): QuestionEntity {
         const questionEntity = new QuestionEntity();
         questionEntity.id = id;
         questionEntity.value = value;
+        questionEntity.questionnaireId = questionnaireId;
         return questionEntity;
     }
 }

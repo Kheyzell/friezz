@@ -1,39 +1,44 @@
+import questionnaireService from '@freizz/client/core/services/questionnaire.service';
+import { useQuestionnaireStore } from '@freizz/client/store/questionnaire.store';
 import { Questionnaire } from '@friezz/common';
 import { useEffect, useState } from 'react';
 import { HttpResponse } from '../../models/http-response';
-import questionnaireService from '@freizz/client/core/services/questionnaire.service';
 
-export const useQuestionnaire = (questionnaireName?: string) => {
-    const [questionnaire, setQuestionnaire] = useState<Questionnaire | null>(null);
+export const useQuestionnaire = (questionnaireId?: number) => {
+    const { currentQuestionnaire, setCurrentQuestionnaire } = useQuestionnaireStore();
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState<string | null | undefined>(null);
 
     useEffect(() => {
-        if (!questionnaireName) {
+        if (!questionnaireId) {
             return setLoading(false);
         }
 
         const getQuestionSet = async () => {
-            const { data, error } = await questionnaireService.getByName(questionnaireName);
+            const { data, error } = await questionnaireService.getById(questionnaireId);
 
             setError(error);
             if (data) {
-                setQuestionnaire(data);
+                setCurrentQuestionnaire(data);
             }
             setLoading(false);
         };
 
         getQuestionSet();
-    }, [questionnaireName]);
+    }, [questionnaireId]);
 
-    const saveQuestionnaire = async (newQuestionSet: Questionnaire): Promise<HttpResponse<void>> => {
-        const { error } = await questionnaireService.save(newQuestionSet);
+    const saveQuestionnaire = async (newQuestionnaire: Questionnaire): Promise<HttpResponse<Questionnaire>> => {
+        const { data, error } = await questionnaireService.save(newQuestionnaire);
         setError(error);
-        return { error };
+
+        if (data) {
+            setCurrentQuestionnaire(data);
+        }
+        return { data, error };
     };
 
     return {
-        questionnaire,
+        questionnaire: currentQuestionnaire,
         isLoading,
         error,
         saveQuestionnaire,
