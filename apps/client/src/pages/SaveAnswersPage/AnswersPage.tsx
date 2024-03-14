@@ -69,7 +69,7 @@ export const AnswersPage: FC = () => {
                 className="fixed max-w-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  bg-gray-200 rounded-2xl p-4"
             >
                 <ParticipantLinks
-                    questionsSetName={questionnaire.name}
+                    questionnaireId={questionnaire.id!}
                     participantNames={questionnaire.participantNames}
                 />
             </Modal>
