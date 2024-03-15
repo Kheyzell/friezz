@@ -11,7 +11,7 @@ class QuestionnaireService {
     }
 
     async getByName(questionnaireName: string): Promise<HttpResponse<Questionnaire>> {
-        return httpService.get<Questionnaire>(`${QUESTIONNAIRES_API}/${questionnaireName}`);
+        return httpService.get<Questionnaire>(`${QUESTIONNAIRES_API}/name/${questionnaireName}`);
     }
 
     async save(questionnaire: Questionnaire): Promise<HttpResponse<Questionnaire>> {
