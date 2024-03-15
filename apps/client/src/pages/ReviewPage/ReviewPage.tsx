@@ -8,10 +8,10 @@ import { ReviewAnswersForQuestion } from './AnswersReview';
 import { useReview } from './useReview.hook';
 
 export const ReviewPage: FC = () => {
-    const { questionnaireName } = useParams();
+    const { questionnaireId } = useParams();
     const [participantIndex, setParticipantIndex] = useState(0);
 
-    const { questions, participantNames, isLoading } = useReview(questionnaireName ?? '');
+    const { questions, participantNames, isLoading } = useReview(Number(questionnaireId));
     const participantName = participantNames[participantIndex];
 
     const onGoPrevious = () => setParticipantIndex((i) => i - 1);

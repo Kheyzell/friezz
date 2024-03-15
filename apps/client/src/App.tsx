@@ -28,17 +28,17 @@ function App() {
 
                 <div className="max-w-md mx-auto mt-4">
                     <Routes>
-                        <Route path="/questionnaire/create" element={<SaveQuestionnairePage />} />
+                        <Route path="/questionnaire/create" element={<SaveQuestionnairePage isCreation={true} />} />
                         <Route
                             path="/questionnaire/edit/:questionnaireName"
                             element={<SaveQuestionnairePage />}
                         />
                         <Route
-                            path="/questionnaire/:questionnaireName/participant/:participantName"
+                            path="/questionnaire/:questionnaireId/participant/:participantName"
                             element={<AnswersPage />}
                         />
                         <Route
-                            path="/questionnaire/review/:questionnaireName"
+                            path="/questionnaire/review/:questionnaireId"
                             element={<ReviewPage />}
                         />
                         <Route path="/" element={<HomePage />} />

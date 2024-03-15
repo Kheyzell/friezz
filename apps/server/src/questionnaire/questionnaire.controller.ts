@@ -15,10 +15,14 @@ export class QuestionsSetController {
     return this.questionnaireService.findAll();
   }
   
-  @Get('/:questionnaireName')
+  @Get('/:questionnaireId')
+  async getById(@Param() { questionnaireId }: { questionnaireId: number }): Promise<Questionnaire> {
+    return await this.questionnaireService.findOneById(questionnaireId);
+  }
+  
+  @Get('/name/:questionnaireName')
   async getByName(@Param() { questionnaireName }: { questionnaireName: string }): Promise<Questionnaire> {
-    const questionsSet = await this.questionnaireService.findOneByName(questionnaireName);
-    return questionsSet;
+    return await this.questionnaireService.findOneByName(questionnaireName);
   }
 
   @Post('/create')

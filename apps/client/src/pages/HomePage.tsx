@@ -4,6 +4,8 @@ import { PrimaryButton } from '@freizz/client/shared/components/buttons/PrimaryB
 import { useUserStore } from '@freizz/client/store/user.store';
 import { FC, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import questionnaireService from '../core/services/questionnaire.service';
 
 type HomePageProps = {};
 export const HomePage: FC<HomePageProps> = () => {
@@ -19,7 +21,14 @@ export const HomePage: FC<HomePageProps> = () => {
 
     const handleQuestionnareLoad = () => {
         const name = questionnaireNameInputRef.current?.value;
-        navigate(`/answers/${name}/${username}`);
+        if (name) {
+            questionnaireService.getByName(name).then(({ data: questionnaire }) => {
+                if (!questionnaire) {
+                    return toast.error(`Could not find a questionnaire named "${name}"`); 
+                }
+                navigate(`/questionnaire/${questionnaire?.id}/participant/${username}`);
+            });
+        }
     };
 
     return (

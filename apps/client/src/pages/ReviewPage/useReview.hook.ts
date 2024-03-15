@@ -2,14 +2,14 @@ import questionnaireService from '@freizz/client/core/services/questionnaire.ser
 import { Questionnaire } from '@friezz/common';
 import { useEffect, useState } from 'react';
 
-export const useReview = (questionnaireName: string) => {
+export const useReview = (questionnaireId: number) => {
     const [questionnaire, setQuestionnaire] = useState<Questionnaire | null>(null);
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState<string | null | undefined>(null);
 
     useEffect(() => {
         const getQuestionSet = async () => {
-            const { data, error } = await questionnaireService.getByName(questionnaireName);
+            const { data, error } = await questionnaireService.getById(questionnaireId);
 
             setError(error);
             if (data) {
@@ -19,7 +19,7 @@ export const useReview = (questionnaireName: string) => {
         };
 
         getQuestionSet();
-    }, [questionnaireName]);
+    }, [questionnaireId]);
 
     const questions = questionnaire?.questions ?? [];
     const participantNames = questionnaire?.participantNames ?? [];

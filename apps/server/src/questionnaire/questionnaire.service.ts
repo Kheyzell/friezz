@@ -19,7 +19,16 @@ export class QuestionnaireService {
   }
 
   async findOneById(id: number): Promise<QuestionnaireEntity | null> {
-    return this.questionnaireRepository.findOne({ where: { id } });
+    return this.questionnaireRepository.findOne({
+      where: { id },
+      join: {
+        alias: "questionnaire",
+        leftJoinAndSelect: {
+          "questions": "questionnaire.questions",
+          "answers": "questions.answers",
+        }
+      }
+    });
   }
 
   async findOneByName(name: string): Promise<Questionnaire | null> {
@@ -40,14 +49,13 @@ export class QuestionnaireService {
   async create(saveQuestionnaireDto: SaveQuestionnaireDto): Promise<Questionnaire> {
     const questionnaireEntity = await this.questionnaireRepository.save(QuestionnaireEntity.createFromDto(saveQuestionnaireDto));
 
-    const questionEntities = saveQuestionnaireDto.questions
-      .map(saveQuestionnaireDto => QuestionEntity.createFromDto(saveQuestionnaireDto))
-      .map(question => {
-        question.questionnaireId = questionnaireEntity.id;
-        return question;
-      });
-    this.questionRepository.save(questionEntities);
+    const questionEntities = await this.questionRepository.save(
+      saveQuestionnaireDto.questions.map(
+        saveQuestionnaireDto => QuestionEntity.createFromDto(saveQuestionnaireDto, questionnaireEntity.id)
+      )
+    );
 
+    questionnaireEntity.questions = questionEntities;
     return questionnaireEntity.toQuestionnaire();
   }
 

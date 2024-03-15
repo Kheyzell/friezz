@@ -15,9 +15,9 @@ export const AnswersPage: FC = () => {
     const { username, setUsername } = useUserStore();
 
     const navigate = useNavigate();
-    const { questionnaireName, participantName: participantNameParam } = useParams();
+    const { questionnaireId, participantName: participantNameParam } = useParams();
 
-    const { questionnaire, isLoading } = useQuestionnaire(questionnaireName);
+    const { questionnaire, isLoading } = useQuestionnaire(Number(questionnaireId));
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -27,11 +27,11 @@ export const AnswersPage: FC = () => {
         }
     }, [participantNameParam]);
 
-    const onEditClick = () => navigate(`/questionnaire/edit/${questionnaire?.name}`);
+    const onEditClick = () => navigate(`/questionnaire/edit/${questionnaire?.id}`);
 
     const openModal = () => setIsModalOpen(true);
     const onCloseModal = () => setIsModalOpen(false);
-    const onReviewQuestionnaire = () => navigate(`/questionnaire/review/${questionnaire?.name}`);
+    const onReviewQuestionnaire = () => navigate(`/questionnaire/review/${questionnaire?.id}`);
 
     if (!questionnaire) {
         return <div>No questionnaire found</div>;
@@ -69,7 +69,7 @@ export const AnswersPage: FC = () => {
                 className="fixed max-w-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  bg-gray-200 rounded-2xl p-4"
             >
                 <ParticipantLinks
-                    questionsSetName={questionnaire.name}
+                    questionnaireId={questionnaire.id!}
                     participantNames={questionnaire.participantNames}
                 />
             </Modal>
