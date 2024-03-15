@@ -3,6 +3,7 @@ import { SecondaryButton } from '@freizz/client/shared/components/buttons/Second
 import { FC } from 'react';
 import { FiClipboard } from 'react-icons/fi';
 import { generatePath } from 'react-router-dom';
+import { toast } from 'sonner';
 
 type ParticipantLinksProps = {
     questionnaireId: number;
@@ -12,6 +13,12 @@ export const ParticipantLinks: FC<ParticipantLinksProps> = ({
     questionnaireId,
     participantNames,
 }) => {
+
+    const handleCopyLinkToClipboard = (participantName: string, path: string) => {
+        navigator.clipboard.writeText(path);
+        toast.info(`The link to the questionnaire for ${participantName} has been copied to your clipboard`);
+    }
+
     return (
         <div className="grid">
             <Title> Links to answers pages </Title>
@@ -28,7 +35,7 @@ export const ParticipantLinks: FC<ParticipantLinksProps> = ({
                         <div key={index} className="grid grid-cols-2">
                             {participantName}:
                             <div>
-                                <SecondaryButton onClick={() => navigator.clipboard.writeText(path)}>
+                                <SecondaryButton onClick={() => handleCopyLinkToClipboard(participantName, path)}>
                                     <FiClipboard />
                                 </SecondaryButton>
                             </div>
