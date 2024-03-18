@@ -8,28 +8,30 @@ import { QuestionnaireEntity } from './entities/questionnaire.entity';
 export class QuestionsSetController {
   constructor(
     private readonly questionnaireService: QuestionnaireService,
-  ) {}
+  ) { }
 
   @Get()
   async getAll(): Promise<QuestionnaireEntity[]> {
     return this.questionnaireService.findAll();
   }
-  
+
   @Get('/:questionnaireId')
   async getById(@Param() { questionnaireId }: { questionnaireId: number }): Promise<Questionnaire> {
-    return await this.questionnaireService.findOneById(questionnaireId);
+    const questionnaireEntity = await this.questionnaireService.findOneById(questionnaireId);
+    return questionnaireEntity.toQuestionnaire();
   }
-  
+
   @Get('/name/:questionnaireName')
   async getByName(@Param() { questionnaireName }: { questionnaireName: string }): Promise<Questionnaire> {
-    return await this.questionnaireService.findOneByName(questionnaireName);
+    const questionnaireEntity = await this.questionnaireService.findOneByName(questionnaireName);
+    return questionnaireEntity.toQuestionnaire();
   }
 
   @Post('/create')
   async createQuestionnaire(@Body() saveQuestionnaireDto: SaveQuestionnaireDto): Promise<Questionnaire> {
     return this.questionnaireService.create(saveQuestionnaireDto);
   }
-  
+
   @Post('/update')
   async updateQuestionnaire(@Body() questionnaireData: QuestionnaireEntity): Promise<QuestionnaireEntity> {
     return this.questionnaireService.update(questionnaireData);

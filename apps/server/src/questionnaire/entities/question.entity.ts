@@ -7,7 +7,7 @@ import { AnswerEntity } from './answer.entity';
 export class QuestionEntity {
     @PrimaryGeneratedColumn()
     id: number;
-    
+
     @Column('integer')
     questionnaireId: number;
 
@@ -20,7 +20,7 @@ export class QuestionEntity {
     @OneToMany(() => AnswerEntity, (answer) => answer.question, { cascade: true })
     answers: AnswerEntity[];
 
-    toQuestion(): Question {        
+    toQuestion(): Question {
         return {
             id: this.id,
             value: this.value,

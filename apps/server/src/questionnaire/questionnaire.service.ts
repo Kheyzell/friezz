@@ -31,8 +31,8 @@ export class QuestionnaireService {
     });
   }
 
-  async findOneByName(name: string): Promise<Questionnaire | null> {
-    const questionnaireEntity = await this.questionnaireRepository.findOne({
+  async findOneByName(name: string): Promise<QuestionnaireEntity | null> {
+    return this.questionnaireRepository.findOne({
       where: { name },
       join: {
         alias: "questionnaire",
@@ -42,8 +42,6 @@ export class QuestionnaireService {
         }
       }
     });
-    
-    return questionnaireEntity.toQuestionnaire();
   }
 
   async create(saveQuestionnaireDto: SaveQuestionnaireDto): Promise<Questionnaire> {
