@@ -20,6 +20,9 @@ export class AnswerEntity {
     @Column('varchar')
     value: string;
 
+    @Column('boolean')
+    isValid: boolean;
+
     @ManyToOne(() => QuestionEntity, (question) => question.answers, { orphanedRowAction: 'delete', onDelete: 'CASCADE', onUpdate: 'CASCADE' })
     question: QuestionEntity;
 
@@ -30,6 +33,7 @@ export class AnswerEntity {
             creatorName: this.creatorName,
             targetParticipantName: this.targetParticipantName,
             value: this.value,
+            isValid: this.isValid,
         }
     }
 

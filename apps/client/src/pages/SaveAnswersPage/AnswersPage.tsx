@@ -31,7 +31,7 @@ export const AnswersPage: FC = () => {
 
     const openModal = () => setIsModalOpen(true);
     const onCloseModal = () => setIsModalOpen(false);
-    const onReviewQuestionnaire = () => navigate(`/questionnaire/review/${questionnaire?.id}`);
+    const onReviewQuestionnaire = () => navigate(`/questionnaire/${questionnaire?.id}/review`);
 
     if (!questionnaire) {
         return <div>No questionnaire found</div>;

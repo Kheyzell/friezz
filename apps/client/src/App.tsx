@@ -6,6 +6,7 @@ import { HomePage } from './pages/HomePage';
 import { ReviewPage } from './pages/ReviewPage/ReviewPage';
 import { AnswersPage } from './pages/SaveAnswersPage/AnswersPage';
 import { SaveQuestionnairePage } from './pages/SaveQuestionnairePage/SaveQuestionnairePage';
+import { ScoresPage } from './pages/ScoresPage/ScoresPage';
 
 function App() {
     return (
@@ -33,13 +34,20 @@ function App() {
                             path="/questionnaire/edit/:questionnaireName"
                             element={<SaveQuestionnairePage />}
                         />
+
                         <Route
                             path="/questionnaire/:questionnaireId/participant/:participantName"
                             element={<AnswersPage />}
                         />
+
                         <Route
-                            path="/questionnaire/review/:questionnaireId"
+                            path="/questionnaire/:questionnaireId/review"
                             element={<ReviewPage />}
+                        />
+
+                        <Route
+                            path="/questionnaire/:questionnaireId/scores"
+                            element={<ScoresPage />}
                         />
                         <Route path="/" element={<HomePage />} />
                     </Routes>
