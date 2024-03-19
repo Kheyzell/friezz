@@ -72,4 +72,27 @@ export class QuestionnaireService {
     const answerEntities = answers.map(answer => AnswerEntity.createFromDto(answer));
     await this.answerRepository.save(answerEntities);
   }
+
+  async validateAnswer(answerId: number): Promise<void> {
+    return await this.evaluateAnswer(answerId, true);
+  }
+
+  async rejectAnswer(answerId: number): Promise<void> {
+    return await this.evaluateAnswer(answerId, false);
+  }
+
+  async cancelAnswer(answerId: number): Promise<void> {
+    return await this.evaluateAnswer(answerId, undefined);
+  }
+
+  private async evaluateAnswer(answerId: number, evaluationValue?: boolean): Promise<void> {
+    const answer = await this.answerRepository.findOneBy({ id: answerId });
+
+    if (!answer) {
+      throw new Error(`Answer with ID ${answerId} not found`);
+    }
+
+    answer.isValid = evaluationValue;
+    await this.answerRepository.save(answer);
+  }
 }

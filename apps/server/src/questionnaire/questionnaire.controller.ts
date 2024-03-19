@@ -41,4 +41,19 @@ export class QuestionsSetController {
   async saveAnswers(@Body() saveAnswersDto: SaveAnswersDto): Promise<void> {
     return this.questionnaireService.saveAnswers(saveAnswersDto.answers);
   }
+
+  @Post('/answers/:answerId/validate')
+  async validateAnswer(@Param() { answerId }: { answerId: number }): Promise<void> {
+    return this.questionnaireService.validateAnswer(answerId);
+  }
+
+  @Post('/answers/:answerId/reject')
+  async rejectAnswer(@Param() { answerId }: { answerId: number }): Promise<void> {
+    return this.questionnaireService.rejectAnswer(answerId);
+  }
+
+  @Post('/answers/:answerId/cancel')
+  async cancelAnswer(@Param() { answerId }: { answerId: number }): Promise<void> {
+    return this.questionnaireService.cancelAnswer(answerId);
+  }
 }

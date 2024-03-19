@@ -26,6 +26,28 @@ class QuestionnaireService {
         return httpService.post(`${QUESTIONNAIRES_API}/${ANSWERS_API}`, saveAnswerDto);
     }
 
+    async validateAnswer(answerId: number): Promise<HttpResponse<void>> {
+        return httpService.post(`${QUESTIONNAIRES_API}/${ANSWERS_API}/${answerId}/validate`, null);
+    }
+
+    async rejectAnswer(answerId: number): Promise<HttpResponse<void>> {
+        return httpService.post(`${QUESTIONNAIRES_API}/${ANSWERS_API}/${answerId}/reject`, null);
+    }
+
+    async cancelAnswer(answerId: number): Promise<HttpResponse<void>> {
+        return httpService.post(`${QUESTIONNAIRES_API}/${ANSWERS_API}/${answerId}/cancel`, null);
+    }
+
+    async getQuestionnaireScores(questionnaireId: number): Promise<HttpResponse<Score[]>> {
+        const { data: questionnaire, error } = await this.getById(questionnaireId);
+        if (!questionnaire || error) {
+            return { data: [], error };
+        }
+
+        const scores = this.calculateScoreFromQuestionnaire(questionnaire);
+        return { data: scores }
+    }
+
     private async create(questionnaire: SaveQuestionnaireDto): Promise<HttpResponse<Questionnaire>> {
         return httpService.post(`${QUESTIONNAIRES_API}/create`, questionnaire);
     }
@@ -45,6 +67,14 @@ class QuestionnaireService {
 
     private createDtoFromAnswers(answers: Answer[]): SaveAnswersDto {
         return { answers };
+    }
+
+    private calculateScoreFromQuestionnaire(questionnaire: Questionnaire): Score[] {
+        const allAnswers = questionnaire.questions.map(question => question.answers).flat();
+        return questionnaire.participantNames.map(participantName => ({
+            participantName,
+            value: allAnswers.filter(answer => answer.creatorName === participantName).filter(answer => answer.isValid).length
+        }));
     }
 }
 
