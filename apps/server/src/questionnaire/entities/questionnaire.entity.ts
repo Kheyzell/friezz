@@ -16,11 +16,11 @@ export class QuestionnaireEntity {
     @Column('varchar')
     participantNames: string[];
 
-    // @Column('timestamp')
-    // creationtimestamp: string;
+    @Column('timestamp')
+    creationDate: string;
     
-    // @Column('timestamp')
-    // lastmodified: string;
+    @Column('timestamp')
+    lastModified: string;
 
     @OneToMany(() => QuestionEntity, (question) => question.questionnaire, { cascade: true })
     questions: QuestionEntity[];
