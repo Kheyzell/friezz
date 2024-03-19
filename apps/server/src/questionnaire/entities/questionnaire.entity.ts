@@ -18,20 +18,22 @@ export class QuestionnaireEntity {
 
     @Column('timestamp')
     creationDate: string;
-    
+
     @Column('timestamp')
     lastModified: string;
 
     @OneToMany(() => QuestionEntity, (question) => question.questionnaire, { cascade: true })
     questions: QuestionEntity[];
 
-    toQuestionnaire(): Questionnaire {        
+    toQuestionnaire(): Questionnaire {
         return {
             id: this.id,
             name: this.name,
             creatorName: this.creatorName,
             participantNames: this.participantNames,
-            questions: this.questions?.map(questionEntity => questionEntity.toQuestion()) ?? [],
+            questions: this.questions
+                ?.sort((q1, q2) => q1.id - q2.id) // sort by creation order
+                .map(questionEntity => questionEntity.toQuestion()) ?? [],
         }
     }
 
@@ -40,7 +42,7 @@ export class QuestionnaireEntity {
         questionnaireEntity.creatorName = saveQuestionnaireDto.creatorName;
         questionnaireEntity.name = saveQuestionnaireDto.name;
         questionnaireEntity.participantNames = saveQuestionnaireDto.participantNames;
-        
+
         return questionnaireEntity;
     }
 }
