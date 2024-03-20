@@ -2,6 +2,7 @@ import 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import './App.css';
+import './i18n/i18next.config';
 import { HomePage } from './pages/HomePage';
 import { ReviewPage } from './pages/ReviewPage/ReviewPage';
 import { AnswersPage } from './pages/SaveAnswersPage/AnswersPage';
@@ -29,7 +30,10 @@ function App() {
 
                 <div className="max-w-md mx-auto mt-4">
                     <Routes>
-                        <Route path="/questionnaire/create" element={<SaveQuestionnairePage isCreation={true} />} />
+                        <Route
+                            path="/questionnaire/create"
+                            element={<SaveQuestionnairePage isCreation={true} />}
+                        />
                         <Route
                             path="/questionnaire/edit/:questionnaireName"
                             element={<SaveQuestionnairePage />}

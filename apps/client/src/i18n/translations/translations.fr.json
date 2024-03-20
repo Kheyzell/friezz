@@ -1,0 +1,35 @@
+{
+  "locale": "en",
+  "Last update": "Last update",
+  "Bonuses": "Bonuses",
+  "Unique technologies": "Unique technologies",
+  "Units affected by bonuses or technologies": "Units affected by bonuses or technologies",
+  "No unit affected by bonuses": "No unit affected by bonuses",
+  "Fully upgraded units": "Fully upgraded units",
+  "No fully upgraded unit": "No fully upgraded unit",
+  "Unit": "Unit",
+  "Technology": "Technology",
+  "Unique": "Unique",
+  "Show Fully upgraded": "Show Fully upgraded",
+  "Show the list of civilisations having the selected units fully upgraded": "Show the list of civilisations having the selected units fully upgraded",
+  "Show Excluded": "Show Excluded",
+  "Show the list of civilisations that do not satisfy the filters": "Show the list of civilisations that do not satisfy the filters",
+  "Team bonus": "Team bonus",
+  "Filtered": "Filtered",
+  "Fully upgraded": "Fully upgraded",
+  "Excluded": "Excluded",
+  "List of affected units": "List of affected units",
+  "List of affected upgrades": "List of affected technologies",
+  "Scale up": "Scale up",
+  "Scale down": "Scale down",
+  "civ": {
+    "armenians": {
+      "name": "Armenians",
+      "bonus": {
+        "armenians1": {
+          "description": "Mule Carts cost -{{value}}%"
+        }
+      }
+    }
+  }
+}
