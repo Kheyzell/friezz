@@ -1,0 +1,14 @@
+{
+  "homePage": {
+     "enterName": "Enter your name:",
+     "yourName": "Your name",
+     "createNewQuestionnaire": "Create new questionnaire",
+     "selectExistingQuestionnaire": "Or select an existing questionnaire:",
+     "questionnaireName": "Questionnaire's name",
+     "load": "Load"
+  },
+  "error": {
+     "questionnaireNotFound": "Could not find a questionnaire named \"{{name}}\""
+  }
+ }
+ 

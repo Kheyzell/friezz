@@ -1,5 +1,6 @@
 import { PrimaryButton } from '@freizz/client/shared/components/buttons/PrimaryButton';
 import { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Loader } from '../../shared/components/Loader';
@@ -9,6 +10,7 @@ import { ReviewAnswers } from './components/AnswersReview/ReviewAnswers';
 import { useReview } from './useReview.hook';
 
 export const ReviewPage: FC = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const { questionnaireId } = useParams();
@@ -27,7 +29,7 @@ export const ReviewPage: FC = () => {
 
     return (
         <div className="grid gap-8">
-            <Title> Review </Title>
+            <Title>{t('reviewPage.title')}</Title>
 
             {isLoading ? (
                 <Loader />
@@ -41,10 +43,7 @@ export const ReviewPage: FC = () => {
                             <FiArrowLeft />
                         </SecondaryButton>
 
-                        <ReviewAnswers
-                            participantName={participantName!}
-                            questions={questions}
-                        />
+                        <ReviewAnswers participantName={participantName!} questions={questions} />
 
                         <SecondaryButton
                             onClick={onGoNext}
@@ -54,7 +53,13 @@ export const ReviewPage: FC = () => {
                         </SecondaryButton>
                     </div>
 
-                    {isLastParticipant && (<div><PrimaryButton onClick={onShowScores}> Show scores </PrimaryButton></div>)}
+                    {isLastParticipant && (
+                        <div>
+                            <PrimaryButton onClick={onShowScores}>
+                                {t('reviewPage.showScores')}
+                            </PrimaryButton>
+                        </div>
+                    )}
                 </>
             )}
         </div>
