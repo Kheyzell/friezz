@@ -1,0 +1,151 @@
+databaseChangeLog:
+- changeSet:
+    id: 1710893141881-1
+    author: kheyz (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: Question_pkey
+            name: id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: value
+            type: VARCHAR(256)
+        - column:
+            constraints:
+              nullable: false
+            name: questionnaireId
+            type: INTEGER
+        - column:
+            name: lastModified
+            type: TIMESTAMP WITHOUT TIME ZONE
+        tableName: Question
+- changeSet:
+    id: 1710893141881-2
+    author: kheyz (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: Questionnaire_pkey
+            name: id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR
+        - column:
+            constraints:
+              nullable: false
+            name: creatorName
+            type: VARCHAR
+        - column:
+            constraints:
+              nullable: false
+            name: participantNames
+            type: VARCHAR[]
+        - column:
+            name: creationDate
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: lastModified
+            type: TIMESTAMP WITHOUT TIME ZONE
+        tableName: Questionnaire
+- changeSet:
+    id: 1710893141881-3
+    author: kheyz (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: Answer_pkey
+            name: id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: questionId
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: creatorName
+            type: VARCHAR(256)
+        - column:
+            constraints:
+              nullable: false
+            name: targetParticipantName
+            type: VARCHAR(256)
+        - column:
+            name: value
+            type: VARCHAR(256)
+        - column:
+            name: lastModified
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: isValid
+            type: BOOLEAN
+        tableName: Answer
+- changeSet:
+    id: 1710893141881-4
+    author: kheyz (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: questionnaireId
+        indexName: fki_fk_questionnaire_id
+        tableName: Question
+- changeSet:
+    id: 1710893141881-5
+    author: kheyz (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: questionnaireId
+        baseTableName: Question
+        constraintName: fk_questionnaire_id
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: Questionnaire
+        validate: true
+- changeSet:
+      id: 24032024151055-6
+      author: kheyz (generated)
+      changes:
+        - createFunction:
+            catalogName: postgres
+            schemaName: public
+            functionName: update_creation_date
+            functionBody: |
+              BEGIN
+                NEW."creationDate" := NOW();
+                RETURN NEW;
+              END;
+            language: plpgsql
+        - createTrigger:
+            catalogName: postgres
+            schemaName: public
+            tableName: questionnaire
+            triggerName: set_creation_date_trigger
+            triggerEvent: BEFORE UPDATE
+            forEachRow: true
+            procedureName: update_creation_date
