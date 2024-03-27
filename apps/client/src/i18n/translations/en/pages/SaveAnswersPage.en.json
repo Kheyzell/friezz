@@ -1,0 +1,18 @@
+{
+   "saveAnswersPage": {
+      "reviewQuestionnaire": "Review Questionnaire",
+      "noQuestionnaireFound": "No questionnaire found",
+      "participantQuestionList": {
+         "answerQuestions": "Answer the questions",
+         "guessOthersReplies": "Now, guess what the others have replied"
+      },
+      "participantLinks": {
+         "linksToAnswersPagesTitle": "Links to answers pages",
+         "linkCopied": "The link to the questionnaire for {{participantName}} has been copied to your clipboard"
+      },
+      "useAnswerForm": {
+         "saveError": "Your answers couldn't be saved for {{participantName}}",
+         "saveSuccess": "Your answers have been saved for {{participantName}}"
+      }
+   }
+}

@@ -1,0 +1,18 @@
+{
+  "saveAnswersPage": {
+     "reviewQuestionnaire": "Voir les résultats",
+     "noQuestionnaireFound": "Aucun questionnaire trouvé",
+     "participantQuestionList": {
+      "answerQuestions": "Réponds aux questions",
+      "guessOthersReplies": "Maintenant, devine ce que les autres ont répondu"
+   },
+   "participantLinks": {
+      "linksToAnswersPagesTitle": "Liens vers les pages réponses",
+      "linkCopied": "Le lien pour le questionnaire de {{participantName}} a été copié dans votre presse papier"
+   },
+   "useAnswerForm": {
+      "saveError": "Vos réponse pour {{participantName}} n'ont pas pu être enregistrées",
+      "saveSuccess": "Vos réponse pour {{participantName}} ont été enregistrées"
+   }
+  }
+ }

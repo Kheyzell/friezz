@@ -1,0 +1,9 @@
+{
+  "reviewPage": {
+    "title": "Review",
+    "showScores": "Show scores",
+    "useAnswerReview": {
+      "saveAnswerError": "This answer couldn't be validated"
+    }
+  }
+}

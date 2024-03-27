@@ -1,0 +1,9 @@
+{
+  "reviewPage": {
+    "title": "Review",
+    "showScores": "Voir les scores",
+    "useAnswerReview": {
+      "saveAnswerError": "Cette réponse n'a pas pu être validée"
+    }
+  }
+}

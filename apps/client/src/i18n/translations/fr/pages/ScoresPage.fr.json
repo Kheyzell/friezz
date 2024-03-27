@@ -1,0 +1,8 @@
+{
+  "scoresPage": {
+    "title": "Scores",
+    "useScores": {
+      "fetchScoresError": "Les scores n'ont pas pu être récupérés pour ce questionnaire"
+    }
+  }
+}

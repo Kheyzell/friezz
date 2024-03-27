@@ -1,6 +1,7 @@
 import { Answer, Question } from '@friezz/common';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import { DEFAULT_ANSWER } from '../../answers.const';
 import questionnaireService from '@freizz/client/core/services/questionnaire.service';
 
@@ -9,6 +10,7 @@ export const useAnswerForm = (
     targetParticipantName: string,
     questions: Question[],
 ) => {
+    const { t } = useTranslation();
     const initialAnswers = questions.map(
         (question) =>
             question.answers.find(
@@ -35,10 +37,16 @@ export const useAnswerForm = (
         setIsSaveLoading(false);
 
         if (error) {
-            return toast.error(`Your answers couldn't be saved for ${targetParticipantName}`);
+            return toast.error(
+                t('saveAnswersPage.answerForm.saveError', {
+                    participantName: targetParticipantName,
+                }),
+            );
         }
 
-        toast.success(`Your answers have been saved for ${targetParticipantName}`);
+        toast.success(
+            t('saveAnswersPage.answerForm.saveSuccess', { participantName: targetParticipantName }),
+        );
     };
 
     return { answers, setAnswers, saveAnswers, isSaveLoading, savingError };

@@ -4,6 +4,7 @@ import { Title } from '@freizz/client/shared/components/Title';
 import { useUserStore } from '@freizz/client/store/user.store';
 import { Question } from '@friezz/common';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAnswerForm } from './useAnswerForm.hook';
 
 type AnswerFormProps = {
@@ -11,6 +12,8 @@ type AnswerFormProps = {
     questions: Question[];
 };
 export const AnswerForm: React.FC<AnswerFormProps> = ({ participantName, questions }) => {
+    const { t } = useTranslation();
+
     const { username } = useUserStore();
 
     const { answers, setAnswers, saveAnswers, isSaveLoading } = useAnswerForm(
@@ -53,13 +56,14 @@ export const AnswerForm: React.FC<AnswerFormProps> = ({ participantName, questio
                 );
             })}
 
-            <div className='flex justify-center'>
-                {isSaved
-                    ? <></> // <div className='bg-green-500 text-white rounded-full border-2 border-green-500'> <FiCheckCircle /> </div>
-                    : (<button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded">
-                        {isSaveLoading ? <Loader /> : 'Save'}
-                    </button>)
-                }
+            <div className="flex justify-center">
+                {isSaved ? (
+                    <></> // <div className='bg-green-500 text-white rounded-full border-2 border-green-500'> <FiCheckCircle /> </div>
+                ) : (
+                    <button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded">
+                        {isSaveLoading ? <Loader /> : t('save')}
+                    </button>
+                )}
             </div>
         </div>
     );

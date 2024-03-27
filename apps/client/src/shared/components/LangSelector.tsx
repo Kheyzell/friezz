@@ -16,16 +16,14 @@ const LangSelector: FC = () => {
                 onClick={() => onFlagClick('en')}
                 title="English"
             >
-                {' '}
-                EN{' '}
+                EN
             </button>
             <button
                 className={currentLanguage !== 'fr' ? 'opacity-60' : ''}
                 onClick={() => onFlagClick('fr')}
                 title="Français"
             >
-                {' '}
-                FR{' '}
+                FR
             </button>
         </div>
     );

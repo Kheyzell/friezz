@@ -5,11 +5,14 @@ import './App.css';
 import './i18n/i18next.config';
 import { HomePage } from './pages/HomePage';
 import { ReviewPage } from './pages/ReviewPage/ReviewPage';
-import { AnswersPage } from './pages/SaveAnswersPage/AnswersPage';
+import { SaveAnswersPage } from './pages/SaveAnswersPage/SaveAnswersPage';
 import { SaveQuestionnairePage } from './pages/SaveQuestionnairePage/SaveQuestionnairePage';
 import { ScoresPage } from './pages/ScoresPage/ScoresPage';
+import { useTranslation } from 'react-i18next';
 
 function App() {
+    const { t } = useTranslation();
+
     return (
         <BrowserRouter>
             <div>
@@ -22,7 +25,7 @@ function App() {
                                 className="block max-w-md mx-auto w-full py-1 bg-slate-600 rounded-2xl text-white cursor-pointer"
                                 to="/"
                             >
-                                Home
+                                {t('home')}
                             </Link>
                         </li>
                     </ul>
@@ -41,7 +44,7 @@ function App() {
 
                         <Route
                             path="/questionnaire/:questionnaireId/participant/:participantName"
-                            element={<AnswersPage />}
+                            element={<SaveAnswersPage />}
                         />
 
                         <Route
