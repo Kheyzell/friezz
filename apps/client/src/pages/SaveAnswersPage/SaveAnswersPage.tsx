@@ -4,6 +4,7 @@ import { PrimaryButton } from '@freizz/client/shared/components/buttons/PrimaryB
 import { SecondaryButton } from '@freizz/client/shared/components/buttons/SecondaryButton';
 import { useUserStore } from '@freizz/client/store/user.store';
 import { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FiEdit, FiLink2 } from 'react-icons/fi';
 import Modal from 'react-modal';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,7 +12,8 @@ import { useQuestionnaire } from '../SaveQuestionnairePage/useQuestionnaire.hook
 import { ParticipantLinks } from './components/ParticipantLinks';
 import { ParticipantQuestionList } from './components/ParticipantQuestionList';
 
-export const AnswersPage: FC = () => {
+export const SaveAnswersPage: FC = () => {
+    const { t } = useTranslation();
     const { username, setUsername } = useUserStore();
 
     const navigate = useNavigate();
@@ -34,7 +36,7 @@ export const AnswersPage: FC = () => {
     const onReviewQuestionnaire = () => navigate(`/questionnaire/${questionnaire?.id}/review`);
 
     if (!questionnaire) {
-        return <div>No questionnaire found</div>;
+        return <div>{t('saveAnswersPage.noQuestionnaireFound')}</div>;
     }
 
     return (
@@ -57,7 +59,7 @@ export const AnswersPage: FC = () => {
 
                     {questionnaire.creatorName === username && (
                         <PrimaryButton onClick={onReviewQuestionnaire}>
-                            Review questionnaire
+                            {t('saveAnswersPage.reviewQuestionnaire')}
                         </PrimaryButton>
                     )}
                 </div>
@@ -66,7 +68,7 @@ export const AnswersPage: FC = () => {
             <Modal
                 isOpen={isModalOpen}
                 onRequestClose={onCloseModal}
-                className="fixed max-w-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  bg-gray-200 rounded-2xl p-4"
+                className="fixed max-w-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded-2xl p-4"
             >
                 <ParticipantLinks
                     questionnaireId={questionnaire.id!}

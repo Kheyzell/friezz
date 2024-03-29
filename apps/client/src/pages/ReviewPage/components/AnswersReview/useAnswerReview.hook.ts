@@ -2,9 +2,11 @@ import questionnaireService from '@freizz/client/core/services/questionnaire.ser
 import { HttpResponse } from '@freizz/client/models/http-response';
 import { Answer } from '@friezz/common';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 export const useAnswerReview = (initialAnswer: Answer) => {
+    const { t } = useTranslation();
     const [answer, setAnswer] = useState(initialAnswer);
 
     const validate = async () => await evaluate(true);
@@ -19,7 +21,7 @@ export const useAnswerReview = (initialAnswer: Answer) => {
         const oldIsValid = answer.isValid;
 
         // optimistic update
-        setAnswer({ ...answer, isValid: evalutationValue});
+        setAnswer({ ...answer, isValid: evalutationValue });
 
         let response: HttpResponse<void>;
         switch (evalutationValue) {
@@ -28,21 +30,21 @@ export const useAnswerReview = (initialAnswer: Answer) => {
                 break;
 
             case false:
-                response = await questionnaireService.rejectAnswer(answer.id)
+                response = await questionnaireService.rejectAnswer(answer.id);
                 break;
 
             case undefined:
-                response = await questionnaireService.cancelAnswer(answer.id)
+                response = await questionnaireService.cancelAnswer(answer.id);
         }
 
         const { error } = response;
         if (error) {
-            setAnswer({ ...answer, isValid: oldIsValid});
+            setAnswer({ ...answer, isValid: oldIsValid });
             return showErrorToast();
         }
-    }
+    };
 
-    const showErrorToast = () => toast.error(`This answer couldn't be validated`);
+    const showErrorToast = () => toast.error(t('reviewPage.useAnswerReview.saveAnswerError'));
 
     return { answer, validate, reject, cancel };
 };

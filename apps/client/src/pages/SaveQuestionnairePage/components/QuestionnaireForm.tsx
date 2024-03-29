@@ -4,7 +4,8 @@ import { Title } from '@freizz/client/shared/components/Title';
 import { PrimaryButton } from '@freizz/client/shared/components/buttons/PrimaryButton';
 import { useUserStore } from '@freizz/client/store/user.store';
 import { Question, Questionnaire } from '@friezz/common';
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getElementsAtRandomFromArray } from '../../../shared/array.utils';
 import { DEFAULT_QUESTIONNAIRE } from '../questions.const';
 import { ParticipantNamesForm } from './ParticipantNamesForm';
@@ -14,16 +15,17 @@ type QuestionnaireFormProps = {
     initialQuestionnaire?: Questionnaire | null;
     onSave: (questionnaire: Questionnaire) => void;
 };
-export const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({
-    initialQuestionnaire,
-    onSave,
-}) => {
+export const QuestionnaireForm: FC<QuestionnaireFormProps> = ({ initialQuestionnaire, onSave }) => {
+    const { t, i18n } = useTranslation();
     const { username } = useUserStore();
 
     const [questionnaire, setQuestionnaire] = useState<Questionnaire>(
         initialQuestionnaire ?? {
             ...DEFAULT_QUESTIONNAIRE,
-            questions: getElementsAtRandomFromArray(DEFAULT_QUESTIONS, 5).map(value => ({
+            questions: getElementsAtRandomFromArray(
+                DEFAULT_QUESTIONS[i18n.language] || DEFAULT_QUESTIONS['en'],
+                5,
+            ).map((value) => ({
                 value,
                 creatorName: '',
                 answers: [],
@@ -53,11 +55,13 @@ export const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({
         <div className="p-4">
             <div className="flex flex-col gap-8">
                 <div>
-                    <Title> Questionnaire: </Title>
+                    <Title> {t('saveQuestionnairePage.questionnaireForm.title')} </Title>
                     <FormInput
                         value={questionnaire.name}
                         onChange={handleNameChange}
-                        placeholder="Name..."
+                        placeholder={t(
+                            'saveQuestionnairePage.questionnaireForm.questionnaireNamePlaceholder',
+                        )}
                     />
                 </div>
 
@@ -71,7 +75,7 @@ export const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({
                     onQuestionsChange={handleQuestionsChange}
                 />
 
-                <PrimaryButton onClick={handleSave}>Save</PrimaryButton>
+                <PrimaryButton onClick={handleSave}>{t('save')}</PrimaryButton>
             </div>
         </div>
     );

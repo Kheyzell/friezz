@@ -1,0 +1,8 @@
+{
+  "scoresPage": {
+    "title": "Scores",
+    "useScores": {
+      "fetchScoresError": "The scores couldn't be fetch for this questionnaire"
+    }
+  }
+}
