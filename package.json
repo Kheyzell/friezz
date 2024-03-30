@@ -8,6 +8,8 @@
     "start": "turbo run dev",
     "build": "turbo run build",
     "start:prod": "node apps/server/dist/main",
+    "docker:start-db": "docker-compose up -d",
+    "docker:schema-db": "docker-compose exec friezz_postgres pg_dump -U postgres -d postgres -s > ./database/friezz_db_schema.sql",
     "prepare": "husky install"
   },
   "devDependencies": {
