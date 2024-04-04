@@ -1,0 +1,102 @@
+version: "3.9"
+
+services:
+  database_postgres:
+    container_name: ${CONTAINER_DATABASE}
+    image: postgres:12-alpine
+    restart: always
+    env_file:
+      - .env.development
+    environment:
+      - POSTGRES_DB=${DATABASE_DATABASE}
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    volumes:
+      - ./database/friezz_db_schema.sql:/docker-entrypoint-initdb.d/friezz_db_schema.sql
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - friezz-network
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+
+  server:
+    container_name: ${CONTAINER_SERVER}
+    build:
+      dockerfile: Dockerfile.server.development
+    restart: always
+    env_file:
+      - .env.development
+    environment:
+      - DATABASE_HOST=database_postgres
+    networks:
+      - friezz-network
+    ports:
+      - "${SERVER_PORT}:3000"
+    expose:
+      - ${SERVER_PORT}
+    depends_on:
+      - ${CONTAINER_DATABASE}
+    links:
+      - ${CONTAINER_DATABASE}
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/server
+          target: /usr/src/friezz/apps/server
+        - action: sync
+          path: ./apps/common
+          target: /usr/src/friezz/apps/common
+    command: "npm start"
+
+  client:
+    container_name: ${CONTAINER_CLIENT}
+    build:
+      dockerfile: Dockerfile.client.development
+    restart: always
+    env_file:
+      - .env.development
+    ports:
+      - "${CLIENT_PORT}:${CLIENT_PORT}"
+    expose:
+      - ${CLIENT_PORT}
+    networks:
+      - friezz-network
+    depends_on:
+      - ${CONTAINER_SERVER}
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/client
+          target: /usr/src/friezz/apps/client
+        - action: sync
+          path: ./apps/common
+          target: /usr/src/friezz/apps/common
+    command: "npm start"
+
+  tool_pgadmin:
+    image: dpage/pgadmin4
+    container_name: ${CONTAINER_PGADMIN}
+    restart: always
+    env_file:
+      - .env.development
+    environment:
+      - PGADMIN_DEFAULT_USERNAME=${DATABASE_USERNAME}
+      - PGADMIN_DEFAULT_PASSWORD=${DATABASE_PASSWORD}
+    ports:
+      - "${PGADMIN_PORT}:80"
+    depends_on:
+      - ${CONTAINER_DATABASE}
+    volumes:
+      - pgadmin:/root/.pgadmin
+    networks:
+      - friezz-network
+
+volumes:
+  pgdata:
+  pgadmin:
+
+networks:
+  friezz-network:
+    driver: bridge

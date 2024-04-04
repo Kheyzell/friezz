@@ -8,8 +8,10 @@
     "start": "turbo run dev",
     "build": "turbo run build",
     "start:prod": "node apps/server/dist/main",
-    "docker:start-db": "docker-compose up -d",
-    "docker:schema-db": "docker-compose exec friezz_postgres pg_dump -U postgres -d postgres -s > ./database/friezz_db_schema.sql",
+    "docker:watch": "docker-compose -f docker-compose.development.yaml --env-file .env.development watch",
+    "docker:start-db": "docker-compose -f docker-compose.development.yaml --env-file .env.development up -d database_postgres tool_pgadmin",
+    "docker:start": "docker-compose -f docker-compose.development.yaml --env-file .env.development up --build --remove-orphans",
+    "docker:dump-schema-db": "docker-compose exec friezz_postgres pg_dump -U postgres -d postgres -s > ./database/friezz_db_schema.sql",
     "prepare": "husky install"
   },
   "devDependencies": {
