@@ -6,6 +6,8 @@ import { TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from "@nestjs/typeorm
 
 class TypeOrmConfig {
     static getOrmConfig(configService: ConfigService): TypeOrmModuleOptions {
+        const ssl = configService.get<string>('DATABASE_SSL') === "true";
+        
         return {
             type: 'postgres',
 
@@ -14,7 +16,7 @@ class TypeOrmConfig {
             database: configService.get<string>('DATABASE_DATABASE'),
             username: configService.get<string>('DATABASE_USERNAME'),
             password: configService.get<string>('DATABASE_PASSWORD'),
-            ssl: configService.get<boolean>('DATABASE_SSL'),
+            ssl,
             logging: configService.get<boolean>('DATABASE_LOGGING'),
 
             entities: [QuestionnaireEntity, QuestionEntity, AnswerEntity],

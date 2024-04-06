@@ -1,0 +1,18 @@
+FROM node:20-alpine3.18
+
+WORKDIR /usr/src/friezz
+
+RUN npm i -g @nestjs/cli
+
+COPY package.json .
+COPY package-lock.json .
+COPY turbo.json .
+COPY tsconfig.json .
+COPY .env.development .env
+
+COPY ./apps/server ./apps/server
+COPY ./apps/common ./apps/common
+
+RUN npm install
+
+RUN npm run build -- --scope='common' --include-dependencies --no-deps

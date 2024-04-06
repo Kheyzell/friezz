@@ -1,0 +1,7 @@
+.env
+dist
+test
+.turbo
+.gitignore
+.git
+*.md
