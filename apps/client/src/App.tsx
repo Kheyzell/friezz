@@ -1,14 +1,15 @@
 import 'react';
+import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import './App.css';
 import './i18n/i18next.config';
 import { HomePage } from './pages/HomePage';
+import { LinksPage } from './pages/LinksPage/LinksPage';
 import { ReviewPage } from './pages/ReviewPage/ReviewPage';
 import { SaveAnswersPage } from './pages/SaveAnswersPage/SaveAnswersPage';
 import { SaveQuestionnairePage } from './pages/SaveQuestionnairePage/SaveQuestionnairePage';
 import { ScoresPage } from './pages/ScoresPage/ScoresPage';
-import { useTranslation } from 'react-i18next';
 
 function App() {
     const { t } = useTranslation();
@@ -40,6 +41,11 @@ function App() {
                         <Route
                             path="/questionnaire/edit/:questionnaireName"
                             element={<SaveQuestionnairePage />}
+                        />
+
+                        <Route
+                            path="/questionnaire/:questionnaireId/links"
+                            element={<LinksPage />}
                         />
 
                         <Route

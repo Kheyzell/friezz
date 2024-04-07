@@ -1,4 +1,8 @@
 {
   "home": "Accueil",
-  "save": "Enregistrer"
+  "save": "Enregistrer",
+  "participantLinks": {
+    "linksToAnswersPagesTitle": "Liens vers les questionnaires des participants",
+    "linkCopied": "Le lien pour le questionnaire de {{participantName}} a été copié dans votre presse papier"
+  }
 }

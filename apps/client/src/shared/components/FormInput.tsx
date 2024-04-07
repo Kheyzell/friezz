@@ -1,4 +1,12 @@
-import { DetailedHTMLProps, FC, InputHTMLAttributes, Ref } from 'react';
+import {
+    DetailedHTMLProps,
+    FC,
+    InputHTMLAttributes,
+    Ref,
+    RefObject,
+    useEffect,
+    useRef,
+} from 'react';
 
 type FormInputProps = Omit<
     DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
@@ -7,7 +15,6 @@ type FormInputProps = Omit<
     inputRef?: Ref<HTMLInputElement>;
     onChange?: (text: string) => void;
 };
-
 export const FormInput: FC<FormInputProps> = ({
     inputRef,
     onChange,
@@ -25,3 +32,33 @@ export const FormInput: FC<FormInputProps> = ({
         className="w-full p-2 border rounded"
     />
 );
+
+type FormTextareaProps = Omit<
+    DetailedHTMLProps<InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>,
+    'onChange'
+> & {
+    inputRef?: RefObject<HTMLTextAreaElement>;
+    onChange?: (text: string) => void;
+};
+export const FormTextarea: FC<FormTextareaProps> = ({ onChange, value, placeholder, ...props }) => {
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    useEffect(() => {
+        if (textareaRef?.current) {
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+        }
+    }, [value]);
+
+    return (
+        <textarea
+            {...props}
+            value={value}
+            ref={textareaRef}
+            onChange={(inputEvent) => (onChange ? onChange(inputEvent.target.value) : null)}
+            placeholder={placeholder}
+            className="w-full p-2 border rounded resize-none mh-10 overflow-hidden h-auto"
+            rows={1}
+        />
+    );
+};

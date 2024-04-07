@@ -1,4 +1,4 @@
-import { MultipleTextsInput } from '@freizz/client/shared/components/MultipleTextsInput';
+import { MultipleTextarea } from '@freizz/client/shared/components/MultipleTextsInput';
 import { Question } from '@friezz/common';
 import { useTranslation } from 'react-i18next';
 
@@ -16,7 +16,7 @@ export const QuestionsForm: React.FC<QuestionsFormProps> = ({ questions, onQuest
     };
 
     return (
-        <MultipleTextsInput
+        <MultipleTextarea
             title={t('saveQuestionnairePage.questionsForm.formTitle')}
             initialTexts={initialQuestionValues}
             onTextsChange={onTextChange}

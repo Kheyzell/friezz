@@ -9,16 +9,11 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-type HomePageProps = {};
-export const HomePage: FC<HomePageProps> = () => {
+export const HomePage: FC = () => {
     const { t } = useTranslation();
     const questionnaireNameInputRef = useRef<HTMLInputElement | null>(null);
-    const { username, setUsername } = useUserStore();
+    const { username } = useUserStore();
     const navigate = useNavigate();
-
-    const handleUserNameChange = (name: string) => {
-        setUsername(name);
-    };
 
     const handleQuestionnareLoad = () => {
         const name = questionnaireNameInputRef.current?.value;
@@ -33,20 +28,13 @@ export const HomePage: FC<HomePageProps> = () => {
     };
 
     return (
-        <div className="grid gap-8">
-            <Title>{t('homePage.enterName')}</Title>
-            <FormInput
-                placeholder={t('homePage.yourName')}
-                value={username}
-                onChange={handleUserNameChange}
-            />
+        <div className="flex flex-col justify-between gap-8 h-[calc(100vh-112px)]">
+            <div className="mt-8 flex-1 max-h-96 flex flex-col justify-center lg:justify-start gap-8">
+                <PrimaryButton onClick={() => navigate('/questionnaire/create')}>
+                    {t('homePage.createNewQuestionnaire')}
+                </PrimaryButton>
 
-            {username && (
-                <>
-                    <PrimaryButton onClick={() => navigate('/questionnaire/create')}>
-                        {t('homePage.createNewQuestionnaire')}
-                    </PrimaryButton>
-
+                {username && (
                     <div>
                         <Title>{t('homePage.selectExistingQuestionnaire')}</Title>
 
@@ -60,8 +48,8 @@ export const HomePage: FC<HomePageProps> = () => {
                             </PrimaryButton>
                         </div>
                     </div>
-                </>
-            )}
+                )}
+            </div>
 
             <div className="flex justify-end">
                 <LangSelector />

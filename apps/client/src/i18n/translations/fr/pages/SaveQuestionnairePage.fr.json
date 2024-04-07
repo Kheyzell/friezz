@@ -1,13 +1,15 @@
 {
   "saveQuestionnairePage": {
+    "enterName": "Nom:",
+    "yourName": "Nom d'utilisateur",
     "saveError": "Le questionnaire {{name}} n'a pas pu être sauvegardé.",
     "saveSuccess": "Le questionnaire {{name}} a été créé.",
     "questionnaireForm": {
       "title": "Questionnaire :",
       "questionnaireNamePlaceholder": "Nom du questionnaire"
     },
-    "participantNamesForm": {
-      "formTitle": "Participants :"
+    "otherParticipantNamesForm": {
+      "formTitle": "Autres participants :"
     },
     "questionsForm": {
       "formTitle": "Questions :"

@@ -1,7 +1,5 @@
 {
   "homePage": {
-     "enterName": "Nom:",
-     "yourName": "Ton nom",
      "createNewQuestionnaire": "Créer un questionnaire",
      "selectExistingQuestionnaire": "Ou sélectionner un questionnaire existant :",
      "questionnaireName": "Nom du questionnaire",
