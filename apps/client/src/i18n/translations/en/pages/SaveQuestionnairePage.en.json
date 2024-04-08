@@ -1,13 +1,15 @@
 {
   "saveQuestionnairePage": {
+    "enterName": "Enter your username:",
+    "yourName": "Username",
     "saveError": "Questionnaire {{name}} couldn't be saved.",
     "saveSuccess": "Questionnaire {{name}} has been successfully saved.",
     "questionnaireForm": {
       "title": "Questionnaire:",
       "questionnaireNamePlaceholder": "Name of the questionnaire"
     },
-    "participantNamesForm": {
-      "formTitle": "Participants:"
+    "otherParticipantNamesForm": {
+      "formTitle": "Other participants:"
     },
     "questionsForm": {
       "formTitle": "Questions:"

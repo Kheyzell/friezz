@@ -4,12 +4,13 @@ import { Title } from '@freizz/client/shared/components/Title';
 import { PrimaryButton } from '@freizz/client/shared/components/buttons/PrimaryButton';
 import { useUserStore } from '@freizz/client/store/user.store';
 import { Question, Questionnaire } from '@friezz/common';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getElementsAtRandomFromArray } from '../../../shared/array.utils';
 import { DEFAULT_QUESTIONNAIRE } from '../questions.const';
-import { ParticipantNamesForm } from './ParticipantNamesForm';
+import { OtherParticipantNamesForm } from './ParticipantNamesForm';
 import { QuestionsForm } from './QuestionsForm';
+import { useQuestionnaireForm } from './useQuestionnaireForm.hook';
 
 type QuestionnaireFormProps = {
     initialQuestionnaire?: Questionnaire | null;
@@ -17,65 +18,98 @@ type QuestionnaireFormProps = {
 };
 export const QuestionnaireForm: FC<QuestionnaireFormProps> = ({ initialQuestionnaire, onSave }) => {
     const { t, i18n } = useTranslation();
-    const { username } = useUserStore();
+    const { username, setUsername } = useUserStore();
 
-    const [questionnaire, setQuestionnaire] = useState<Questionnaire>(
-        initialQuestionnaire ?? {
-            ...DEFAULT_QUESTIONNAIRE,
-            questions: getElementsAtRandomFromArray(
-                DEFAULT_QUESTIONS[i18n.language] || DEFAULT_QUESTIONS['en'],
-                5,
-            ).map((value) => ({
-                value,
-                creatorName: '',
-                answers: [],
-            })),
-            creatorName: username,
-            participantNames: [username],
-        },
-    );
-
-    const handleNameChange = (name: string) => {
-        setQuestionnaire((prev) => ({ ...prev, name }));
+    const randomQuestions = getElementsAtRandomFromArray(
+        DEFAULT_QUESTIONS[i18n.language] || DEFAULT_QUESTIONS['en'],
+        5,
+    ).map((value) => ({
+        value,
+        creatorName: '',
+        answers: [],
+    }));
+    const questionnaire = initialQuestionnaire ?? {
+        ...DEFAULT_QUESTIONNAIRE,
+        questions: randomQuestions,
+        creatorName: username,
+        participantNames: username ? [username] : [],
     };
 
-    const handleParticipantNamesChange = (participantNames: string[]) => {
-        setQuestionnaire((prev) => ({ ...prev, participantNames }));
+    const {
+        creatorName,
+        questionnaireName,
+        otherParticipantNames,
+        questions,
+        setCreatorName,
+        setQuestionnaireName,
+        setOtherParticipantNames,
+        setQuestions,
+    } = useQuestionnaireForm(questionnaire);
+
+    const handleCreatorNameChange = (creatorName: string) => {
+        setUsername(creatorName);
+        setCreatorName(creatorName);
+    };
+
+    const handleQuestionnaireNameChange = (name: string) => {
+        setQuestionnaireName(name);
+    };
+
+    const handleOtherParticipantNamesChange = (otherParticipantNames: string[]) => {
+        setOtherParticipantNames(otherParticipantNames);
     };
 
     const handleQuestionsChange = (questions: Question[]) => {
-        setQuestionnaire((prev) => ({ ...prev, questions }));
+        setQuestions(questions);
     };
 
     const handleSave = () => {
-        onSave(questionnaire);
+        onSave({
+            name: questionnaireName,
+            creatorName,
+            participantNames: [creatorName, ...otherParticipantNames],
+            questions,
+        });
     };
 
     return (
         <div className="p-4">
             <div className="flex flex-col gap-8">
                 <div>
+                    <Title>{t('saveQuestionnairePage.enterName')}</Title>
+                    <FormInput
+                        placeholder={t('saveQuestionnairePage.yourName')}
+                        value={username}
+                        onChange={handleCreatorNameChange}
+                    />
+                </div>
+
+                <div>
                     <Title> {t('saveQuestionnairePage.questionnaireForm.title')} </Title>
                     <FormInput
-                        value={questionnaire.name}
-                        onChange={handleNameChange}
+                        value={questionnaireName}
+                        onChange={handleQuestionnaireNameChange}
                         placeholder={t(
                             'saveQuestionnairePage.questionnaireForm.questionnaireNamePlaceholder',
                         )}
                     />
                 </div>
 
-                <ParticipantNamesForm
-                    initialParticipantNames={[...questionnaire.participantNames]}
-                    onParticipantsChange={handleParticipantNamesChange}
-                />
+                {!!username && (
+                    <>
+                        <OtherParticipantNamesForm
+                            initialParticipantNames={otherParticipantNames}
+                            onParticipantsChange={handleOtherParticipantNamesChange}
+                        />
 
-                <QuestionsForm
-                    questions={[...questionnaire.questions]}
-                    onQuestionsChange={handleQuestionsChange}
-                />
+                        <QuestionsForm
+                            questions={questions}
+                            onQuestionsChange={handleQuestionsChange}
+                        />
 
-                <PrimaryButton onClick={handleSave}>{t('save')}</PrimaryButton>
+                        <PrimaryButton onClick={handleSave}>{t('save')}</PrimaryButton>
+                    </>
+                )}
             </div>
         </div>
     );

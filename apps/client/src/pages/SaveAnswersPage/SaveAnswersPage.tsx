@@ -9,7 +9,7 @@ import { FiEdit, FiLink2 } from 'react-icons/fi';
 import Modal from 'react-modal';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuestionnaire } from '../SaveQuestionnairePage/useQuestionnaire.hook';
-import { ParticipantLinks } from './components/ParticipantLinks';
+import { ParticipantLinks } from '../../shared/components/ParticipantLinks';
 import { ParticipantQuestionList } from './components/ParticipantQuestionList';
 
 export const SaveAnswersPage: FC = () => {

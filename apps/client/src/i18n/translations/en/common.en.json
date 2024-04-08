@@ -1,4 +1,8 @@
 {
   "home": "Home",
-  "save": "Save"
+  "save": "Save",
+  "participantLinks": {
+    "linksToAnswersPagesTitle": "Links to participants questionnaires",
+    "linkCopied": "The link to the questionnaire for {{participantName}} has been copied to your clipboard"
+  }
 }

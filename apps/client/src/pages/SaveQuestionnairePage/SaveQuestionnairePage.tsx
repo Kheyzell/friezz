@@ -1,6 +1,5 @@
 import { Loader } from '@freizz/client/shared/components/Loader';
 import { useQuestionnaireStore } from '@freizz/client/store/questionnaire.store';
-import { useUserStore } from '@freizz/client/store/user.store';
 import { Questionnaire } from '@friezz/common';
 import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +11,6 @@ import { useQuestionnaire } from './useQuestionnaire.hook';
 type SaveQuestionnairePageProps = { isCreation?: boolean };
 export const SaveQuestionnairePage: FC<SaveQuestionnairePageProps> = ({ isCreation }) => {
     const { t } = useTranslation();
-    const { username } = useUserStore();
     const { questionnaireId } = useParams();
 
     const { setCurrentQuestionnaire } = useQuestionnaireStore();
@@ -37,7 +35,7 @@ export const SaveQuestionnairePage: FC<SaveQuestionnairePageProps> = ({ isCreati
             }
 
             toast.success(t('saveQuestionnairePage.saveSuccess', { name: questionnaire.name }));
-            navigate(`/questionnaire/${data?.id}/participant/${username}`);
+            navigate(`/questionnaire/${data?.id}/links`);
         });
     };
 

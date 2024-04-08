@@ -5,17 +5,16 @@ type ParticipantsFormProps = {
     initialParticipantNames: string[];
     onParticipantsChange: (participants: string[]) => void;
 };
-export const ParticipantNamesForm: React.FC<ParticipantsFormProps> = ({
+export const OtherParticipantNamesForm: React.FC<ParticipantsFormProps> = ({
     initialParticipantNames,
     onParticipantsChange,
 }) => {
     const { t } = useTranslation();
     return (
         <MultipleTextsInput
-            title={t('saveQuestionnairePage.participantNamesForm.formTitle')}
+            title={t('saveQuestionnairePage.otherParticipantNamesForm.formTitle')}
             initialTexts={initialParticipantNames}
             onTextsChange={onParticipantsChange}
-            isFirstInputDisabled={true}
         />
     );
 };
