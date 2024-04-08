@@ -1,12 +1,4 @@
-import {
-    DetailedHTMLProps,
-    FC,
-    InputHTMLAttributes,
-    Ref,
-    RefObject,
-    useEffect,
-    useRef,
-} from 'react';
+import { DetailedHTMLProps, FC, InputHTMLAttributes, Ref, useEffect, useRef } from 'react';
 
 type FormInputProps = Omit<
     DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
@@ -37,12 +29,12 @@ type FormTextareaProps = Omit<
     DetailedHTMLProps<InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>,
     'onChange'
 > & {
-    inputRef?: RefObject<HTMLTextAreaElement>;
     onChange?: (text: string) => void;
 };
 export const FormTextarea: FC<FormTextareaProps> = ({ onChange, value, placeholder, ...props }) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+    // Adjust the textarea height based on its content
     useEffect(() => {
         if (textareaRef?.current) {
             textareaRef.current.style.height = 'auto';
