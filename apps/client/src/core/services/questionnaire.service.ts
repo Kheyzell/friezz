@@ -21,7 +21,7 @@ class QuestionnaireService {
             : this.create(saveQuestionnaireDto);
     }
 
-    async saveAnswers(answers: Answer[]): Promise<HttpResponse<void>> {
+    async saveAnswers(answers: Answer[]): Promise<HttpResponse<Answer[]>> {
         const saveAnswerDto = this.createDtoFromAnswers(answers);
         return httpService.post(`${QUESTIONNAIRES_API}/${ANSWERS_API}`, saveAnswerDto);
     }
@@ -45,14 +45,18 @@ class QuestionnaireService {
         }
 
         const scores = this.calculateScoreFromQuestionnaire(questionnaire);
-        return { data: scores }
+        return { data: scores };
     }
 
-    private async create(questionnaire: SaveQuestionnaireDto): Promise<HttpResponse<Questionnaire>> {
+    private async create(
+        questionnaire: SaveQuestionnaireDto,
+    ): Promise<HttpResponse<Questionnaire>> {
         return httpService.post(`${QUESTIONNAIRES_API}/create`, questionnaire);
     }
 
-    private async update(questionnaire: SaveQuestionnaireDto): Promise<HttpResponse<Questionnaire>> {
+    private async update(
+        questionnaire: SaveQuestionnaireDto,
+    ): Promise<HttpResponse<Questionnaire>> {
         return httpService.post(`${QUESTIONNAIRES_API}/update`, questionnaire);
     }
 
@@ -70,10 +74,12 @@ class QuestionnaireService {
     }
 
     private calculateScoreFromQuestionnaire(questionnaire: Questionnaire): Score[] {
-        const allAnswers = questionnaire.questions.map(question => question.answers).flat();
-        return questionnaire.participantNames.map(participantName => ({
+        const allAnswers = questionnaire.questions.map((question) => question.answers).flat();
+        return questionnaire.participantNames.map((participantName) => ({
             participantName,
-            value: allAnswers.filter(answer => answer.creatorName === participantName).filter(answer => answer.isValid).length
+            value: allAnswers
+                .filter((answer) => answer.creatorName === participantName)
+                .filter((answer) => answer.isValid).length,
         }));
     }
 }

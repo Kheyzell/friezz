@@ -49,7 +49,7 @@ export class QuestionnaireService {
 
     const questionEntities = await this.questionRepository.save(
       saveQuestionnaireDto.questions.map(
-        saveQuestionnaireDto => QuestionEntity.createFromDto(saveQuestionnaireDto, questionnaireEntity.id)
+        saveQuestionDto => QuestionEntity.createFromDto(saveQuestionDto, questionnaireEntity.id)
       )
     );
 
@@ -68,9 +68,10 @@ export class QuestionnaireService {
     return this.questionnaireRepository.save(updatedQuestionnaireInstance);
   }
 
-  async saveAnswers(answers: Answer[]): Promise<void> {
+  async saveAnswers(answers: Answer[]): Promise<Answer[]> {
     const answerEntities = answers.map(answer => AnswerEntity.createFromDto(answer));
-    await this.answerRepository.save(answerEntities);
+    const newAnswerEntities = await this.answerRepository.save(answerEntities);
+    return newAnswerEntities.map(answerEntity => answerEntity.toAnswer());
   }
 
   async validateAnswer(answerId: number): Promise<void> {
