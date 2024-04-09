@@ -1,7 +1,6 @@
-import { Questionnaire, SaveAnswersDto, SaveQuestionnaireDto } from '@friezz/common';
+import { Answer, Questionnaire, SaveAnswersDto, SaveQuestionnaireDto } from '@friezz/common';
 import { QuestionnaireService } from '@friezz/server/questionnaire/questionnaire.service';
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { AnswerEntity } from './entities/answer.entity';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { QuestionnaireEntity } from './entities/questionnaire.entity';
 
 @Controller('/questionnaires')
@@ -38,7 +37,7 @@ export class QuestionsSetController {
   }
 
   @Post('/answers')
-  async saveAnswers(@Body() saveAnswersDto: SaveAnswersDto): Promise<void> {
+  async saveAnswers(@Body() saveAnswersDto: SaveAnswersDto): Promise<Answer[]> {
     return this.questionnaireService.saveAnswers(saveAnswersDto.answers);
   }
 

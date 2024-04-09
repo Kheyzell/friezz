@@ -32,7 +32,7 @@ export const useAnswerForm = (
 
     const saveAnswers = async (answers: Answer[]) => {
         setIsSaveLoading(true);
-        const { error } = await questionnaireService.saveAnswers(answers);
+        const { data, error } = await questionnaireService.saveAnswers(answers);
         setSavingError(error as string);
         setIsSaveLoading(false);
 
@@ -43,6 +43,8 @@ export const useAnswerForm = (
                 }),
             );
         }
+
+        setAnswers(data ?? []);
 
         toast.success(
             t('saveAnswersPage.answerForm.saveSuccess', { participantName: targetParticipantName }),
