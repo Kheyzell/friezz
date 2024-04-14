@@ -1,13 +1,3 @@
-<style>
-.grouped-section {
-  padding-left: 20px;
-
-  &:hover {
-    box-shadow: inset 3px 0px 0px 0px #808080
-  }
-}
-</style>
-
 # Friezz 
 **Quizz for friends**
 
@@ -45,8 +35,8 @@ git clone https://github.com/kheyzell/Friezz.git
 
 There are three ways to run the project:
 
-### Running the App in Docker Containers (easy way)
-<div class="grouped-section" markdown="1">
+<details>
+  <summary> <span style="font-size: 16px; font-weight: bold;"> Running the App in Docker Containers (easy way) </span> </summary>
 
 To run the entire application, including the frontend, backend, and database, in Docker containers, use the following command:
 
@@ -57,13 +47,12 @@ npm run docker:watch
 
 This command will start all services and watch for changes in the code for development purposes.
 
-</div>
+</details>
 
 ---
 
-### Running the Database in Docker and the Client and Server Locally
-
-<div class="grouped-section" markdown="1">
+<details>
+  <summary> <span style="font-size: 16px; font-weight: bold;"> Running the Database in Docker and the Client and Server Locally </span> </summary>
 
 If you prefer to run the database in a Docker container while running the client and server locally, follow these steps:
 
@@ -98,13 +87,12 @@ DATABASE_LOGGING=true
 npm start
 ```
 
-</div>
+</details>
 
 ---
 
-### Running Everything Locally
-
-<div class="grouped-section" markdown="1">
+<details>
+  <summary> <span style="font-size: 16px; font-weight: bold;"> Running Everything Locally </span> </summary>
 
 To run the entire application locally, follow these steps:
 
@@ -135,9 +123,11 @@ DATABASE_LOGGING=true
 npm start
 ```
 
-</div>
+</details>
 
 ---
+
+When the app is running:
 
 - The app will be available on: http://localhost:5701/
 - The server will listen on port 5000
