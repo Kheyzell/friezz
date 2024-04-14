@@ -1,3 +1,13 @@
+<style>
+.grouped-section {
+  padding-left: 20px;
+
+  &:hover {
+    box-shadow: inset 3px 0px 0px 0px #808080
+  }
+}
+</style>
+
 # Friezz 
 **Quizz for friends**
 
@@ -18,13 +28,14 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-- Docker (to run the app in containers)
-- Node.js
-- PostgreSQL (only if not running in a docker container)
+- Git: https://git-scm.com/downloads
+- Docker (to run the app in containers): https://www.docker.com/get-started/
+- Node.js: https://nodejs.org/en/download
+- PostgreSQL (only if not running in a docker container): https://www.postgresql.org/download/
 
 ## Installation
 
-Clone the repository:
+In a terminal, clone the repository:
 
 ``` bash
 git clone https://github.com/kheyzell/Friezz.git
@@ -35,6 +46,7 @@ git clone https://github.com/kheyzell/Friezz.git
 There are three ways to run the project:
 
 ### Running the App in Docker Containers (easy way)
+<div class="grouped-section" markdown="1">
 
 To run the entire application, including the frontend, backend, and database, in Docker containers, use the following command:
 
@@ -45,9 +57,13 @@ npm run docker:watch
 
 This command will start all services and watch for changes in the code for development purposes.
 
+</div>
+
 ---
 
 ### Running the Database in Docker and the Client and Server Locally
+
+<div class="grouped-section" markdown="1">
 
 If you prefer to run the database in a Docker container while running the client and server locally, follow these steps:
 
@@ -82,9 +98,13 @@ DATABASE_LOGGING=true
 npm start
 ```
 
+</div>
+
 ---
 
 ### Running Everything Locally
+
+<div class="grouped-section" markdown="1">
 
 To run the entire application locally, follow these steps:
 
@@ -115,6 +135,23 @@ DATABASE_LOGGING=true
 npm start
 ```
 
+</div>
+
+---
+
+- The app will be available on: http://localhost:5701/
+- The server will listen on port 5000
+- The PgAdmin interface to manage the database will be available on: http://localhost:5050/
+  - login using those credentials:
+    - email: `postgres@friezz.com`
+    - password: `letmein`
+  - register the PostgreSQL server
+    - right click on `Servers` > `Register` > `Server...`
+    - in the connection tab add those information:
+      - host name: `database_postgres`
+      - port: `5432`
+      - username: `postgres`
+      - password: `letmein`
 
 ## Contribute
 
