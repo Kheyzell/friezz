@@ -1,3 +1,4 @@
+import { HowToModal } from '@freizz/client/shared/components/HowToModal';
 import { Loader } from '@freizz/client/shared/components/Loader';
 import { Title } from '@freizz/client/shared/components/Title';
 import { PrimaryButton } from '@freizz/client/shared/components/buttons/PrimaryButton';
@@ -8,8 +9,8 @@ import { useTranslation } from 'react-i18next';
 import { FiEdit, FiLink2 } from 'react-icons/fi';
 import Modal from 'react-modal';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuestionnaire } from '../SaveQuestionnairePage/useQuestionnaire.hook';
 import { ParticipantLinks } from '../../shared/components/ParticipantLinks';
+import { useQuestionnaire } from '../SaveQuestionnairePage/useQuestionnaire.hook';
 import { ParticipantQuestionList } from './components/ParticipantQuestionList';
 
 export const SaveAnswersPage: FC = () => {
@@ -21,7 +22,8 @@ export const SaveAnswersPage: FC = () => {
 
     const { questionnaire, isLoading } = useQuestionnaire(Number(questionnaireId));
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isParticipantLinksModalOpen, setIsParticipantLinksModalOpen] = useState(false);
+    const [isHowToModalOpen, setIsHowToModalOpen] = useState(false);
 
     useEffect(() => {
         if (!username) {
@@ -31,8 +33,10 @@ export const SaveAnswersPage: FC = () => {
 
     const onEditClick = () => navigate(`/questionnaire/edit/${questionnaire?.id}`);
 
-    const openModal = () => setIsModalOpen(true);
-    const onCloseModal = () => setIsModalOpen(false);
+    const openParticipantLinksModal = () => setIsParticipantLinksModalOpen(true);
+    const openHowToModal = () => setIsHowToModalOpen(true);
+    const onCloseParticipantLinksModal = () => setIsParticipantLinksModalOpen(false);
+    const onCloseHowToModal = () => setIsHowToModalOpen(false);
     const onReviewQuestionnaire = () => navigate(`/questionnaire/${questionnaire?.id}/review`);
 
     if (!questionnaire) {
@@ -46,8 +50,14 @@ export const SaveAnswersPage: FC = () => {
                 <SecondaryButton onClick={onEditClick}>
                     <FiEdit />
                 </SecondaryButton>
-                <SecondaryButton onClick={openModal}>
+                <SecondaryButton onClick={openParticipantLinksModal}>
                     <FiLink2 />
+                </SecondaryButton>
+                <SecondaryButton
+                    className="w-8 h-8 flex justify-center items-center"
+                    onClick={openHowToModal}
+                >
+                    ?
                 </SecondaryButton>
             </div>
 
@@ -66,8 +76,8 @@ export const SaveAnswersPage: FC = () => {
             )}
 
             <Modal
-                isOpen={isModalOpen}
-                onRequestClose={onCloseModal}
+                isOpen={isParticipantLinksModalOpen}
+                onRequestClose={onCloseParticipantLinksModal}
                 className="fixed max-w-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded-2xl p-4"
             >
                 <ParticipantLinks
@@ -75,6 +85,8 @@ export const SaveAnswersPage: FC = () => {
                     participantNames={questionnaire.participantNames}
                 />
             </Modal>
+
+            <HowToModal isModalOpen={isHowToModalOpen} onCloseModal={onCloseHowToModal} />
         </>
     );
 };

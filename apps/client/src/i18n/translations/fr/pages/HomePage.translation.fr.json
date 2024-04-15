@@ -3,7 +3,9 @@
      "createNewQuestionnaire": "Créer un questionnaire",
      "selectExistingQuestionnaire": "Ou sélectionner un questionnaire existant :",
      "questionnaireName": "Nom du questionnaire",
-     "load": "Charger"
+     "load": "Charger",
+     "howTo": "Comment faire",
+     "description": "Friezz vous permet de créer des questionnaires à partager avec vos amis et votre famille. Vous créez des quiz, répondez à des questions, devinez les réponses des autres et voyez qui connaît le mieux les autres. C'est un jeu qui permet d'apprendre à se connaître et de partager des histoires."
   },
   "error": {
      "questionnaireNotFound": "Le questionnaire nommé {{name}} n'a pas pu être trouvé"

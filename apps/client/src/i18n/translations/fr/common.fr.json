@@ -4,5 +4,8 @@
   "participantLinks": {
     "linksToAnswersPagesTitle": "Liens vers les questionnaires des participants",
     "linkCopied": "Le lien pour le questionnaire de {{participantName}} a été copié dans votre presse papier"
+  },
+  "howTo": {
+    "explanation": "1. Créez un questionnaire en entrant le nom de tous les participants et les questions auxquelles vous voulez que chacun réponde.\n 2. Cliquez sur cette icône <ClipboardIcon /> pour obtenir l'url du questionnaire d'un participant, envoyez à chaque participant l'url de son questionnaire et laissez-le le remplir. Cliquez sur suivant.\n 3. Répondez à votre questionnaire (celui qui est entouré en cyan) et enregistrer-le.\n 4. Remplissez maintenant le questionnaire pour chaque autre participant, essayez de deviner ce qu'ils auraient répondu et sauvegardez chacun d'entre eux.\n 5. Lorsque tout le monde a terminé, rassemblez-vous et cliquez sur `Voir les résultats`. Examinez chaque réponse pour les autres participants et décidez ensemble (principalement le participant concerné) si la réponse est bonne ou mauvaise à l'aide des icônes <ThumbsUpIcon /> <ThumbsDownIcon />. N'hésitez pas à partager des histoires et à apprendre à mieux vous connaître !\n 6. Lorsque vous avez fini d'examiner les réponses, cliquez sur `Voir les scores` pour voir le classement de chaque participant en fonction de celui qui a obtenu le plus grand nombre de bonnes réponses."
   }
 }

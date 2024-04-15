@@ -3,7 +3,9 @@
      "createNewQuestionnaire": "Create new questionnaire",
      "selectExistingQuestionnaire": "Or select an existing questionnaire:",
      "questionnaireName": "Questionnaire's name",
-     "load": "Load"
+     "load": "Load",
+     "howTo": "How to",
+     "description": "Friezz lets you create questionnaires to share with your friends and family. You create quizzes, answer questions, guess others' answers, and see who knows who best. It's a game to get to know each other and share stories."
   },
   "error": {
      "questionnaireNotFound": "Could not find a questionnaire named \"{{name}}\""
