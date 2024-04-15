@@ -4,5 +4,8 @@
   "participantLinks": {
     "linksToAnswersPagesTitle": "Links to participants questionnaires",
     "linkCopied": "The link to the questionnaire for {{participantName}} has been copied to your clipboard"
+  },
+  "howTo": {
+    "explanation": "1. Create a questionnaire by entering the name of all participants and the questions you want everyone to answer.\n 2. Click on this icon <ClipboardIcon /> to get the url of the questionnaire for a participant, send each participant their respective questionnaire url and let them fill it up. Click on next.\n 3. Answer your questionnaire (the one surrounded in cyan) and save it.\n 4. Now fill up the questionnaire for each other participant, try to guess what they would have answered and save each of them.\n 5. When everyone is finished, gather and click on `Review Questionnaire`. Review each guess for other paticipants and decide together (mainly the concerned participant) if the answer is right or wrong using the icons <ThumbsUpIcon /> <ThumbsDownIcon />. Don't hesite to share stories and learn more about each other!\n 6. When you're finished reviewing the replies, click on `Show scores` to see a ranking of each participants based on who got the most right answers.\n\n Have fun!"
   }
 }
