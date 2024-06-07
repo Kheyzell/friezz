@@ -11,6 +11,8 @@ type ParticipantLinksProps = {
     questionnaireId: number;
     participantNames: string[];
 };
+
+/** Renders list of buttons that copies the link to participant's answers page for each participant */
 export const ParticipantLinks: FC<ParticipantLinksProps> = ({
     questionnaireId,
     participantNames,

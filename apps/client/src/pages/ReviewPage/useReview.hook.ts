@@ -5,16 +5,15 @@ import { useEffect, useState } from 'react';
 export const useReview = (questionnaireId: number) => {
     const [questionnaire, setQuestionnaire] = useState<Questionnaire | null>(null);
     const [isLoading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null | undefined>(null);
+    const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
         const getQuestionSet = async () => {
-            const { data, error } = await questionnaireService.getById(questionnaireId);
+            (await questionnaireService.getById(questionnaireId)).match({
+                ok: (data) => setQuestionnaire(data),
+                err: (error) => setError(error),
+            });
 
-            setError(error);
-            if (data) {
-                setQuestionnaire(data);
-            }
             setLoading(false);
         };
 

@@ -26,16 +26,14 @@ export const SaveQuestionnairePage: FC<SaveQuestionnairePageProps> = ({ isCreati
         }
     }, [isCreation]);
 
-    const handleQuestionFormSave = (questionnaire: Questionnaire) => {
-        saveQuestionnaire(questionnaire).then(({ data, error }) => {
-            if (error) {
-                return toast.error(
-                    t('saveQuestionnairePage.saveError', { name: questionnaire.name }),
-                );
-            }
-
-            toast.success(t('saveQuestionnairePage.saveSuccess', { name: questionnaire.name }));
-            navigate(`/questionnaire/${data?.id}/links`);
+    const handleQuestionFormSave = async (questionnaire: Questionnaire) => {
+        (await saveQuestionnaire(questionnaire)).match({
+            ok: (questionnaire) => {
+                toast.success(t('saveQuestionnairePage.saveSuccess', { name: questionnaire.name }));
+                navigate(`/questionnaire/${questionnaire.id}/links`);
+            },
+            err: () =>
+                toast.error(t('saveQuestionnairePage.saveError', { name: questionnaire.name })),
         });
     };
 

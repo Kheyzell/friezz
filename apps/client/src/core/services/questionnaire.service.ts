@@ -1,62 +1,85 @@
-import { HttpResponse } from '@freizz/client/models/http-response';
-import { Answer, Questionnaire, SaveAnswersDto, SaveQuestionnaireDto } from '@friezz/common';
+import {
+    Answer,
+    Questionnaire,
+    Result,
+    SaveAnswersDto,
+    SaveQuestionnaireDto,
+    fail,
+    succeed,
+} from '@friezz/common';
+import { HttpResponseError } from '../errors/http-response.errors';
+import { QuestionnaireError } from '../errors/questionnaire.errors';
 import httpService from './http.service';
 
 const QUESTIONNAIRES_API = 'questionnaires';
 const ANSWERS_API = 'answers';
 
 class QuestionnaireService {
-    async getById(questionnaireId: number): Promise<HttpResponse<Questionnaire>> {
-        return httpService.get<Questionnaire>(`${QUESTIONNAIRES_API}/${questionnaireId}`);
+    async getById(
+        questionnaireId: number,
+    ): Promise<Result<Questionnaire, HttpResponseError | QuestionnaireError>> {
+        return (
+            await httpService.get<Questionnaire>(`${QUESTIONNAIRES_API}/${questionnaireId}`)
+        ).chain((questionnaire) => {
+            if (!questionnaire) return fail(QuestionnaireError.notFound);
+
+            return succeed(questionnaire);
+        });
     }
 
-    async getByName(questionnaireName: string): Promise<HttpResponse<Questionnaire>> {
-        return httpService.get<Questionnaire>(`${QUESTIONNAIRES_API}/name/${questionnaireName}`);
+    async getByName(
+        questionnaireName: string,
+    ): Promise<Result<Questionnaire, HttpResponseError | QuestionnaireError>> {
+        return (
+            await httpService.get<Questionnaire>(`${QUESTIONNAIRES_API}/name/${questionnaireName}`)
+        ).chain((questionnaire) => {
+            if (!questionnaire) return fail(QuestionnaireError.notFound);
+
+            return succeed(questionnaire);
+        });
     }
 
-    async save(questionnaire: Questionnaire): Promise<HttpResponse<Questionnaire>> {
+    async save(questionnaire: Questionnaire): Promise<Result<Questionnaire, HttpResponseError>> {
         const saveQuestionnaireDto = this.createDtoFromQuestionnaire(questionnaire);
         return questionnaire.id
             ? this.update(saveQuestionnaireDto)
             : this.create(saveQuestionnaireDto);
     }
 
-    async saveAnswers(answers: Answer[]): Promise<HttpResponse<Answer[]>> {
+    async saveAnswers(answers: Answer[]): Promise<Result<Answer[], HttpResponseError>> {
         const saveAnswerDto = this.createDtoFromAnswers(answers);
         return httpService.post(`${QUESTIONNAIRES_API}/${ANSWERS_API}`, saveAnswerDto);
     }
 
-    async validateAnswer(answerId: number): Promise<HttpResponse<void>> {
+    async validateAnswer(answerId: number): Promise<Result<void, HttpResponseError>> {
         return httpService.post(`${QUESTIONNAIRES_API}/${ANSWERS_API}/${answerId}/validate`, null);
     }
 
-    async rejectAnswer(answerId: number): Promise<HttpResponse<void>> {
+    async rejectAnswer(answerId: number): Promise<Result<void, HttpResponseError>> {
         return httpService.post(`${QUESTIONNAIRES_API}/${ANSWERS_API}/${answerId}/reject`, null);
     }
 
-    async cancelAnswer(answerId: number): Promise<HttpResponse<void>> {
+    async cancelAnswer(answerId: number): Promise<Result<void, HttpResponseError>> {
         return httpService.post(`${QUESTIONNAIRES_API}/${ANSWERS_API}/${answerId}/cancel`, null);
     }
 
-    async getQuestionnaireScores(questionnaireId: number): Promise<HttpResponse<Score[]>> {
-        const { data: questionnaire, error } = await this.getById(questionnaireId);
-        if (!questionnaire || error) {
-            return { data: [], error };
-        }
-
-        const scores = this.calculateScoreFromQuestionnaire(questionnaire);
-        return { data: scores };
+    async getQuestionnaireScores(
+        questionnaireId: number,
+    ): Promise<Result<Score[], HttpResponseError | QuestionnaireError>> {
+        return (await this.getById(questionnaireId)).map((questionnaire) =>
+            this.calculateScoreFromQuestionnaire(questionnaire),
+        );
     }
 
     private async create(
         questionnaire: SaveQuestionnaireDto,
-    ): Promise<HttpResponse<Questionnaire>> {
+    ): Promise<Result<Questionnaire, HttpResponseError>> {
         return httpService.post(`${QUESTIONNAIRES_API}/create`, questionnaire);
     }
 
     private async update(
         questionnaire: SaveQuestionnaireDto,
-    ): Promise<HttpResponse<Questionnaire>> {
+    ): Promise<Result<Questionnaire, HttpResponseError>> {
         return httpService.post(`${QUESTIONNAIRES_API}/update`, questionnaire);
     }
 

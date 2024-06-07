@@ -5,25 +5,25 @@ import { QuestionEntity } from './question.entity';
 @Entity({ name: 'Questionnaire' })
 export class QuestionnaireEntity {
     @PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
 
     @Column('varchar')
-    creatorName: string;
+    creatorName!: string;
 
     @Column('varchar')
-    name: string;
+    name!: string;
 
     @Column('varchar')
-    participantNames: string[];
+    participantNames!: string[];
 
     @Column('timestamp')
-    creationDate: string;
+    creationDate!: string;
 
     @Column('timestamp')
-    lastModified: string;
+    lastModified!: string;
 
     @OneToMany(() => QuestionEntity, (question) => question.questionnaire, { cascade: true })
-    questions: QuestionEntity[];
+    questions!: QuestionEntity[];
 
     toQuestionnaire(): Questionnaire {
         return {

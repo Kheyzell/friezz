@@ -1,30 +1,29 @@
 import { Answer } from '@friezz/common';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { QuestionnaireEntity } from './questionnaire.entity';
 import { QuestionEntity } from './question.entity';
 
 @Entity({ name: 'Answer' })
 export class AnswerEntity {
     @PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
 
     @Column('integer')
-    questionId: number;
+    questionId!: number;
 
     @Column('varchar')
-    creatorName: string;
+    creatorName!: string;
 
     @Column('varchar')
-    targetParticipantName: string;
+    targetParticipantName!: string;
 
     @Column('varchar')
-    value: string;
+    value!: string;
 
     @Column('boolean')
-    isValid: boolean;
+    isValid!: boolean | null;
 
     @ManyToOne(() => QuestionEntity, (question) => question.answers, { orphanedRowAction: 'delete', onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-    question: QuestionEntity;
+    question?: QuestionEntity;
 
     toAnswer(): Answer {
         return {
@@ -39,7 +38,7 @@ export class AnswerEntity {
 
     static createFromDto({ id, questionId, creatorName, targetParticipantName, value }: Answer): AnswerEntity {
         const answerEntity = new AnswerEntity();
-        answerEntity.id = id;
+        answerEntity.id = id ?? -1;
         answerEntity.questionId = questionId;
         answerEntity.creatorName = creatorName;
         answerEntity.targetParticipantName = targetParticipantName;

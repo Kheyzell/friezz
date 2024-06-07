@@ -1,42 +1,43 @@
 import { BASE_API_URL } from '@freizz/client/constants/api.const';
-import { HttpResponse } from '@freizz/client/models/http-response';
+import { Result, fail, succeed } from '@friezz/common';
 import axios from 'axios';
+import { HttpResponseError } from '../errors/http-response.errors';
 
 export class HttpService {
-    async get<T>(resource: string): Promise<HttpResponse<T>> {
+    async get<T>(resource: string): Promise<Result<T | null, HttpResponseError>> {
         try {
             const { data } = await axios.get<T>(`${BASE_API_URL}/${resource}`);
-            return { data };
+            return succeed<T | null>(data ?? null);
         } catch (error) {
-            return { error: `Error fetching data` };
+            return fail(HttpResponseError.couldNotFetch);
         }
     }
 
-    async post<T>(resource: string, body: unknown): Promise<HttpResponse<T>> {
+    async post<T>(resource: string, body: unknown): Promise<Result<T, HttpResponseError>> {
         try {
             const { data } = await axios.post<T>(`${BASE_API_URL}/${resource}`, body);
-            return { data };
+            return succeed(data);
         } catch (error) {
-            return { error: `Error updating data` };
+            return fail(HttpResponseError.couldNotUpdate);
         }
     }
 
-    async put<T>(resource: string, body: unknown): Promise<HttpResponse<T>> {
+    async put<T>(resource: string, body: unknown): Promise<Result<T, HttpResponseError>> {
         try {
             const { data } = await axios.put<T>(`${BASE_API_URL}/${resource}`, body);
-            return { data };
+            return succeed(data);
         } catch (error) {
-            return { error: `Error updating data` };
+            return fail(HttpResponseError.couldNotUpdate);
         }
     }
 
-    async delete(resource: string): Promise<HttpResponse<void>> {
+    async delete(resource: string): Promise<Result<void, HttpResponseError>> {
         try {
             await axios.delete(`${BASE_API_URL}/${resource}`);
 
-            return { data: void 0 };
+            return succeed<void>(void 0);
         } catch (error) {
-            return { error: `Error deleting data` };
+            return fail(HttpResponseError.couldNotDelete);
         }
     }
 }

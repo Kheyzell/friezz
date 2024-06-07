@@ -1,13 +1,13 @@
+import { HttpResponseError } from '@freizz/client/core/errors/http-response.errors';
 import questionnaireService from '@freizz/client/core/services/questionnaire.service';
 import { useQuestionnaireStore } from '@freizz/client/store/questionnaire.store';
-import { Questionnaire } from '@friezz/common';
+import { Questionnaire, Result } from '@friezz/common';
 import { useEffect, useState } from 'react';
-import { HttpResponse } from '../../models/http-response';
 
 export const useQuestionnaire = (questionnaireId?: number) => {
     const { currentQuestionnaire, setCurrentQuestionnaire } = useQuestionnaireStore();
     const [isLoading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null | undefined>(null);
+    const [error, setError] = useState<HttpResponseError | null>(null);
 
     useEffect(() => {
         if (!questionnaireId) {
@@ -15,26 +15,23 @@ export const useQuestionnaire = (questionnaireId?: number) => {
         }
 
         const getQuestionSet = async () => {
-            const { data, error } = await questionnaireService.getById(questionnaireId);
+            (await questionnaireService.getById(questionnaireId)).match({
+                ok: (data) => setCurrentQuestionnaire(data),
+                err: (error) => setError(error),
+            });
 
-            setError(error);
-            if (data) {
-                setCurrentQuestionnaire(data);
-            }
             setLoading(false);
         };
 
         getQuestionSet();
     }, [questionnaireId]);
 
-    const saveQuestionnaire = async (newQuestionnaire: Questionnaire): Promise<HttpResponse<Questionnaire>> => {
-        const { data, error } = await questionnaireService.save(newQuestionnaire);
-        setError(error);
-
-        if (data) {
-            setCurrentQuestionnaire(data);
-        }
-        return { data, error };
+    const saveQuestionnaire = async (
+        newQuestionnaire: Questionnaire,
+    ): Promise<Result<Questionnaire, HttpResponseError>> => {
+        return (await questionnaireService.save(newQuestionnaire))
+            .tap((questionnaire) => setCurrentQuestionnaire(questionnaire))
+            .catchErr((error) => setError(error));
     };
 
     return {

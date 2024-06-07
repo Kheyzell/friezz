@@ -2,9 +2,11 @@ import { Answer, Questionnaire, SaveQuestionnaireDto } from '@friezz/common';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Result, fail, succeed } from '@friezz/common';
 import { AnswerEntity } from './entities/answer.entity';
 import { QuestionEntity } from './entities/question.entity';
 import { QuestionnaireEntity } from './entities/questionnaire.entity';
+import { QuestionnaireError } from './questionnaire.errors';
 
 @Injectable()
 export class QuestionnaireService {
@@ -44,34 +46,46 @@ export class QuestionnaireService {
     });
   }
 
-  async create(saveQuestionnaireDto: SaveQuestionnaireDto): Promise<Questionnaire> {
-    const questionnaireEntity = await this.questionnaireRepository.save(QuestionnaireEntity.createFromDto(saveQuestionnaireDto));
+  async create(saveQuestionnaireDto: SaveQuestionnaireDto): Promise<Result<Questionnaire, QuestionnaireError>> {
+    try {
+      const questionnaireEntity = await this.questionnaireRepository.save(QuestionnaireEntity.createFromDto(saveQuestionnaireDto));
 
-    const questionEntities = await this.questionRepository.save(
-      saveQuestionnaireDto.questions.map(
-        saveQuestionDto => QuestionEntity.createFromDto(saveQuestionDto, questionnaireEntity.id)
-      )
-    );
+      const questionEntities = await this.questionRepository.save(
+        saveQuestionnaireDto.questions.map(
+          saveQuestionDto => QuestionEntity.createFromDto(saveQuestionDto, questionnaireEntity.id)
+        )
+      );
 
-    questionnaireEntity.questions = questionEntities;
-    return questionnaireEntity.toQuestionnaire();
-  }
-
-  async update(updatedQuestionnaire: QuestionnaireEntity): Promise<QuestionnaireEntity> {
-    const existingQuestionnaire = await this.findOneById(updatedQuestionnaire.id);
-
-    if (!existingQuestionnaire) {
-      throw new NotFoundException(`Questionnaire with id '${updatedQuestionnaire.id}' and name '${updatedQuestionnaire.name}' not found`);
+      questionnaireEntity.questions = questionEntities;
+      return succeed(questionnaireEntity.toQuestionnaire());
+    } catch (error) {
+      return fail(QuestionnaireError.creation);
     }
-
-    const updatedQuestionnaireInstance = this.questionnaireRepository.merge(existingQuestionnaire, updatedQuestionnaire);
-    return this.questionnaireRepository.save(updatedQuestionnaireInstance);
   }
 
-  async saveAnswers(answers: Answer[]): Promise<Answer[]> {
-    const answerEntities = answers.map(answer => AnswerEntity.createFromDto(answer));
-    const newAnswerEntities = await this.answerRepository.save(answerEntities);
-    return newAnswerEntities.map(answerEntity => answerEntity.toAnswer());
+  async update(updatedQuestionnaire: QuestionnaireEntity): Promise<Result<QuestionnaireEntity, QuestionnaireError>> {
+    try {
+      const existingQuestionnaire = await this.findOneById(updatedQuestionnaire.id);
+
+      if (!existingQuestionnaire) {
+        throw new NotFoundException(`Questionnaire with id '${updatedQuestionnaire.id}' and name '${updatedQuestionnaire.name}' not found`);
+      }
+
+      const updatedQuestionnaireInstance = this.questionnaireRepository.merge(existingQuestionnaire, updatedQuestionnaire);
+      return succeed(await this.questionnaireRepository.save(updatedQuestionnaireInstance));
+    } catch (error) {
+      return fail(QuestionnaireError.update);
+    }
+  }
+
+  async saveAnswers(answers: Answer[]): Promise<Result<Answer[], QuestionnaireError>> {
+    try {
+      const answerEntities = answers.map(answer => AnswerEntity.createFromDto(answer));
+      const newAnswerEntities = await this.answerRepository.save(answerEntities);
+      return succeed(newAnswerEntities.map(answerEntity => answerEntity.toAnswer()));
+    } catch (error) {
+      return fail(QuestionnaireError.saveAnswers);
+    }
   }
 
   async validateAnswer(answerId: number): Promise<void> {
@@ -83,10 +97,10 @@ export class QuestionnaireService {
   }
 
   async cancelAnswer(answerId: number): Promise<void> {
-    return await this.evaluateAnswer(answerId, undefined);
+    return await this.evaluateAnswer(answerId, null);
   }
 
-  private async evaluateAnswer(answerId: number, evaluationValue?: boolean): Promise<void> {
+  private async evaluateAnswer(answerId: number, evaluationValue: boolean | null): Promise<void> {
     const answer = await this.answerRepository.findOneBy({ id: answerId });
 
     if (!answer) {

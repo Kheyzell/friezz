@@ -1,9 +1,10 @@
+import { HttpResponseError } from '@freizz/client/core/errors/http-response.errors';
+import questionnaireService from '@freizz/client/core/services/questionnaire.service';
 import { Answer, Question } from '@friezz/common';
 import { useState } from 'react';
-import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import { DEFAULT_ANSWER } from '../../answers.const';
-import questionnaireService from '@freizz/client/core/services/questionnaire.service';
 
 export const useAnswerForm = (
     username: string,
@@ -28,27 +29,31 @@ export const useAnswerForm = (
 
     const [isSaveLoading, setIsSaveLoading] = useState(false);
 
-    const [savingError, setSavingError] = useState<string | null>(null);
+    const [savingError, setSavingError] = useState<HttpResponseError | null>(null);
 
     const saveAnswers = async (answers: Answer[]) => {
         setIsSaveLoading(true);
-        const { data, error } = await questionnaireService.saveAnswers(answers);
-        setSavingError(error as string);
+
+        (await questionnaireService.saveAnswers(answers)).match({
+            ok: (data) => {
+                setAnswers(data);
+                toast.success(
+                    t('saveAnswersPage.answerForm.saveSuccess', {
+                        participantName: targetParticipantName,
+                    }),
+                );
+            },
+            err: (error) => {
+                setSavingError(error);
+                toast.error(
+                    t('saveAnswersPage.answerForm.saveError', {
+                        participantName: targetParticipantName,
+                    }),
+                );
+            },
+        });
+
         setIsSaveLoading(false);
-
-        if (error) {
-            return toast.error(
-                t('saveAnswersPage.answerForm.saveError', {
-                    participantName: targetParticipantName,
-                }),
-            );
-        }
-
-        setAnswers(data ?? []);
-
-        toast.success(
-            t('saveAnswersPage.answerForm.saveSuccess', { participantName: targetParticipantName }),
-        );
     };
 
     return { answers, setAnswers, saveAnswers, isSaveLoading, savingError };

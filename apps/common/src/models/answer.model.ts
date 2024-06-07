@@ -4,5 +4,5 @@ export type Answer = {
     value: string;
     creatorName: string;
     targetParticipantName: string;
-    isValid?: boolean;
+    isValid: boolean | null;
 };
