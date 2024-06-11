@@ -19,14 +19,13 @@ export const HomePage: FC = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handleQuestionnareLoad = () => {
+    const handleQuestionnareLoad = async () => {
         const name = questionnaireNameInputRef.current?.value;
         if (name) {
-            questionnaireService.getByName(name).then(({ data: questionnaire }) => {
-                if (!questionnaire) {
-                    return toast.error(t('error.questionnaireNotFound', { name }));
-                }
-                navigate(`/questionnaire/${questionnaire?.id}/participant/${username}`);
+            (await questionnaireService.getByName(name)).match({
+                ok: (questionnaire) =>
+                    navigate(`/questionnaire/${questionnaire.id}/participant/${username}`),
+                err: () => toast.error(t('error.questionnaireNotFound', { name })),
             });
         }
     };

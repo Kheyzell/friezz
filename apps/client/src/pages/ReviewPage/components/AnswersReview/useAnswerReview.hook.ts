@@ -1,6 +1,6 @@
+import { HttpResponseError } from '@freizz/client/core/errors/http-response.errors';
 import questionnaireService from '@freizz/client/core/services/questionnaire.service';
-import { HttpResponse } from '@freizz/client/models/http-response';
-import { Answer } from '@friezz/common';
+import { Answer, Result } from '@friezz/common';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -11,9 +11,9 @@ export const useAnswerReview = (initialAnswer: Answer) => {
 
     const validate = async () => await evaluate(true);
     const reject = async () => await evaluate(false);
-    const cancel = async () => await evaluate(undefined);
+    const cancel = async () => await evaluate(null);
 
-    const evaluate = async (evalutationValue?: boolean) => {
+    const evaluate = async (evalutationValue: boolean | null) => {
         if (!answer.id) {
             return showErrorToast();
         }
@@ -23,25 +23,24 @@ export const useAnswerReview = (initialAnswer: Answer) => {
         // optimistic update
         setAnswer({ ...answer, isValid: evalutationValue });
 
-        let response: HttpResponse<void>;
+        let evaluationResult: Result<void, HttpResponseError>;
         switch (evalutationValue) {
             case true:
-                response = await questionnaireService.validateAnswer(answer.id);
+                evaluationResult = await questionnaireService.validateAnswer(answer.id);
                 break;
 
             case false:
-                response = await questionnaireService.rejectAnswer(answer.id);
+                evaluationResult = await questionnaireService.rejectAnswer(answer.id);
                 break;
 
-            case undefined:
-                response = await questionnaireService.cancelAnswer(answer.id);
+            case null:
+                evaluationResult = await questionnaireService.cancelAnswer(answer.id);
         }
 
-        const { error } = response;
-        if (error) {
+        evaluationResult.catchErr(() => {
             setAnswer({ ...answer, isValid: oldIsValid });
-            return showErrorToast();
-        }
+            showErrorToast();
+        });
     };
 
     const showErrorToast = () => toast.error(t('reviewPage.useAnswerReview.saveAnswerError'));

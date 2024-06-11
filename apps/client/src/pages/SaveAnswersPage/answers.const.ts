@@ -5,4 +5,5 @@ export const DEFAULT_ANSWER: Answer = {
     creatorName: '',
     targetParticipantName: '',
     value: '',
+    isValid: null,
 };

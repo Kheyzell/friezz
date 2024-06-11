@@ -6,19 +6,19 @@ import { AnswerEntity } from './answer.entity';
 @Entity({ name: 'Question' })
 export class QuestionEntity {
     @PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
 
     @Column('integer')
-    questionnaireId: number;
+    questionnaireId!: number;
 
     @Column('varchar')
-    value: string;
+    value!: string;
 
     @ManyToOne(() => QuestionnaireEntity, (questionnaire) => questionnaire.questions, { orphanedRowAction: 'delete', onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-    questionnaire: QuestionnaireEntity;
+    questionnaire!: QuestionnaireEntity;
 
     @OneToMany(() => AnswerEntity, (answer) => answer.question, { cascade: true })
-    answers: AnswerEntity[];
+    answers!: AnswerEntity[];
 
     toQuestion(): Question {
         return {
@@ -30,9 +30,9 @@ export class QuestionEntity {
 
     static createFromDto({ id, value }: SaveQuestionDto, questionnaireId?: number): QuestionEntity {
         const questionEntity = new QuestionEntity();
-        questionEntity.id = id;
+        questionEntity.id = id ?? -1;
         questionEntity.value = value;
-        questionEntity.questionnaireId = questionnaireId;
+        questionEntity.questionnaireId = questionnaireId ?? -1;
         return questionEntity;
     }
 }

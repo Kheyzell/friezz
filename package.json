@@ -7,6 +7,7 @@
     "dev": "turbo run dev",
     "start": "turbo run dev",
     "build": "turbo run build",
+    "build:common": "turbo run build --filter=@friezz/common",
     "start:prod": "node apps/server/dist/main",
     "docker:watch": "docker-compose -f docker-compose.development.yaml --env-file .env.development watch",
     "docker:start-db": "docker-compose -f docker-compose.development.yaml --env-file .env.development up -d database_postgres tool_pgadmin",

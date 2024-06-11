@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import enLogo from '../../../public/gb.png';
 import frLogo from '../../../public/fr.png';
 
+/** Component for globally selecting the language of the app. */
 const LangSelector: FC = () => {
     const { i18n } = useTranslation();
     const currentLanguage = i18n.language;
