@@ -66,7 +66,7 @@ export type Result<Value, Err extends ResultError> = {
     catchErr: (predicate: (arg: Err) => void) => Result<Value, Err>
 
     /**
-     * Matches the `Result` against the successful case `ok` and the error case `err`.
+     * Matches the `Result` against the successful case `ok` and the error case `err` then passes the original value.
      * Used to trigger side effects based on the result.
      * @example
      * const userResult: Result<User, UserError> = userService.get(userId);
@@ -78,7 +78,7 @@ export type Result<Value, Err extends ResultError> = {
     match: (obj: {
         ok: (arg: Value) => void
         err: (arg: Err) => void
-    }) => void
+    }) => Result<Value, Err>
 
     /**
      * Safely get the value inside the Result by handling the error case.
@@ -106,14 +106,14 @@ export type Result<Value, Err extends ResultError> = {
     inspect: () => string
 
     /**
-     * Returns `true` if the `Result` is an error, `false` otherwise.
-     */
-    isFailure: () => boolean
-
-    /**
      * Returns `true` if the `Result` is not an error, `false` otherwise.
      */
     isSuccess: () => boolean
+
+    /**
+     * Returns `true` if the `Result` is an error, `false` otherwise.
+     */
+    isFailure: () => boolean
 
     /**
      * /!\ Unsafely /!\ Returns the value inside the `Result`.
@@ -137,7 +137,7 @@ const success = <O>(arg: O): Result<O, ResultError> => ({
     chainErr: () => succeed(arg),
     tap: predicate => { predicate(arg); return succeed(arg) },
     catchErr: () => succeed(arg),
-    match: obj => obj.ok(arg),
+    match: obj => { obj.ok(arg); return succeed(arg) },
     unwrap: () => arg,
     inspect: () => `Success(${arg})`,
     isFailure: () => false,
@@ -152,7 +152,7 @@ const failure = <E extends ResultError>(arg: E): Result<any, E> => ({
     chainErr: predicate => predicate(arg),
     tap: () => failure(arg),
     catchErr: predicate => { predicate(arg); return failure(arg) },
-    match: obj => obj.err(arg),
+    match: obj => { obj.err(arg); return failure(arg) },
     unwrap: obj => obj.err(arg),
     inspect: () => `Failure(${arg})`,
     isFailure: () => true,
